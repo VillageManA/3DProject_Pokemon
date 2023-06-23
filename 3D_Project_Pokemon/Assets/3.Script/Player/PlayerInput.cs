@@ -21,27 +21,28 @@ public class PlayerInput : MonoBehaviour
             if (Input.GetKey(KeyCode.W))
             {
                 stateManager.ChangeState(State.Run);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().RunTo(transform.forward);
+                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(transform.forward, 10f);
 
             }
             else if (Input.GetKey(KeyCode.A))
             {
-                gameObject.transform.Rotate(0, -5f, 0);
+
+                transform.Rotate(Vector3.up * -90f * Time.deltaTime);
                 stateManager.ChangeState(State.LeftTurn);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().RunTo(-transform.right);
+                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(-transform.right, 3f);
 
             }
             else if (Input.GetKey(KeyCode.S))
             {
                 stateManager.ChangeState(State.Run);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().RunTo(-transform.forward);
+                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(-transform.forward, 10f);
 
             }
             else if (Input.GetKey(KeyCode.D))
             {
-                gameObject.transform.Rotate(0, 5f, 0);
+                transform.Rotate(Vector3.up * 90f * Time.deltaTime);
                 stateManager.ChangeState(State.RightTurn);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().RunTo(transform.right);
+                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(transform.right, 3f);
             }
             else
             {
@@ -53,25 +54,28 @@ public class PlayerInput : MonoBehaviour
             if (Input.GetKey(KeyCode.W))
             {
                 stateManager.ChangeState(State.Move);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(transform.forward);
+                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(transform.forward, 5f);
 
             }
             else if (Input.GetKey(KeyCode.A))
             {
+
+                transform.Rotate(Vector3.up * -90f * Time.deltaTime);
                 stateManager.ChangeState(State.LeftTurn);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(-transform.right);
+                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(-transform.right, 3f);
 
             }
             else if (Input.GetKey(KeyCode.S))
             {
                 stateManager.ChangeState(State.Move);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(-transform.forward);
+                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(-transform.forward, 5f);
 
             }
             else if (Input.GetKey(KeyCode.D))
             {
+                transform.Rotate(Vector3.up * 90 * Time.deltaTime);
                 stateManager.ChangeState(State.RightTurn);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(transform.right);
+                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(transform.right, 3f);
 
 
             }

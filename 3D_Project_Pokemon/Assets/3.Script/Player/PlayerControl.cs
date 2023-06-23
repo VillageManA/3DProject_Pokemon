@@ -32,6 +32,10 @@ public class PlayerControl : MonoBehaviour
         playerMoveMent = GetComponent<PlayerMoveMent>();
     }
 
+    List<GameObject> Pokemon = new List<GameObject>();
+
+
+
     #region 애니메이션 온오프
     public void StartIdleAni()
     {

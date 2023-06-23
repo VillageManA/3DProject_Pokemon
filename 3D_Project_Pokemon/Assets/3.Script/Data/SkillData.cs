@@ -5,25 +5,27 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Data/Skill", fileName = "Skill")]
 public class SkillData : ScriptableObject
 {
-    [SerializeField] private string Name;
-    [SerializeField] private int Damage;
-    [SerializeField] private int Hitrate;
-    [SerializeField] private int PP;
-    [SerializeField] private int Number_of_Attack = 1;
+    [Header("기술머신")]
+    [SerializeField] public int Num;
+    [SerializeField] public string Name;
+    [SerializeField] public int Damage;
+    [SerializeField] public int Hitrate;
+    [SerializeField] public int PP;
+    [SerializeField] public int Number_of_Attack = 1;
 
     [Header("속성")]
-    [SerializeField] PropertyType propertyType;
+    [SerializeField] public PropertyType propertyType;
 
 
     [Header("우선도")]
-    [SerializeField] private int Priority;
+    [SerializeField] public int Priority;
     [Header("물공인지 특공인지")]
-    [SerializeField] private attackType AttackType;
+    [SerializeField] public attackType AttackType;
 
     [Header("필중기인지")]
-    [SerializeField] private bool isMustDamage;
+    [SerializeField] public bool isMustDamage;
     [Header("일격기인지")]
-    [SerializeField] private bool isStriker;
+    [SerializeField] public bool isStriker;
     public enum attackType
     {
         Attack, Speicial, None

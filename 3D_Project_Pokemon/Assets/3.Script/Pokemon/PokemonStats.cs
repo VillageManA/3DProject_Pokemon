@@ -12,21 +12,23 @@ public class PokemonStats : MonoBehaviour
         get { return hp; }
         set
         {
-            Hp = value;
+            hp = value;
         }
     }
 
     //객체별 개체값
-    [SerializeField] private string Name;
-    [SerializeField] private int MaxHp;
-    [SerializeField] private int Attack;
-    [SerializeField] private int Defence;
-    [SerializeField] private int SpAttack;
-    [SerializeField] private int SpDefence;
-    [SerializeField] private int Speed;
-    [SerializeField] private Type Type1;
-    [SerializeField] private Type Type2;
-    private enum Type
+    [SerializeField] public string Name;
+    [SerializeField] public int MaxHp;
+    [SerializeField] public int Attack;
+    [SerializeField] public int Defence;
+    [SerializeField] public int SpAttack;
+    [SerializeField] public int SpDefence;
+    [SerializeField] public int Speed;
+    [SerializeField] public int Level;
+    [SerializeField] public int Exp;
+    [SerializeField] public Type Type1;
+    [SerializeField] public Type Type2;
+    public enum Type
     {
         Normal, Fight, Poison, Earth, Flight, Bug, Rock, Ghost, Steel, Fire, Water, Electricty, Grass, Ice, Esper, Dragon, Evil, Fairy, None
     }
@@ -38,7 +40,6 @@ public class PokemonStats : MonoBehaviour
     public float SpDefenceRank = 0;
     public float SpeedRank = 0;
     public float HitrateRank = 0;
-
     //레벨업 랜덤 계수
     private int LevelUpHp = 0;
     private int LevelUpAttack = 0;
@@ -56,5 +57,43 @@ public class PokemonStats : MonoBehaviour
         LevelUpSpeed += random.Next(1, 3);
     }
 
+    //스킬들
+    public List<SkillData> skills = new List<SkillData>();
 
+    public void AddSkill(SkillData skill)
+    {
+        skills.Add(skill);
+    }
+    public void RemoveSkill(int count)
+    {
+        skills.RemoveAt(count);
+    }
+
+    string jsonFileName = "DataBase/Pokemon";
+    PokemonData[] pokemonArray;
+    protected virtual void Start()
+    {
+        TextAsset jsonFile = Resources.Load<TextAsset>(jsonFileName);
+        pokemonArray = JsonMapper.ToObject<PokemonData[]>(jsonFile.text);    
+    }
+
+    protected PokemonData[] GetPokemonArray()
+    {
+        return pokemonArray;
+    }
 }
+public class PokemonData
+{
+    public string Name;
+    public int Num;
+    public int MaxHp;
+    public int Hp;
+    public int Attack;
+    public int Defence;
+    public int SpAttack;
+    public int SpDefence;
+    public int Speed;
+    public int Type1;
+    public int Type2;
+}
+

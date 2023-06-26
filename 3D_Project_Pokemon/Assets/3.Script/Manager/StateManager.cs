@@ -68,7 +68,7 @@ public class MoveState : Istate
     }
     public void UpdateState()
     {
-        Debug.Log(PlayerControl.Instance);
+        
     }
     public void ExitState()
     {

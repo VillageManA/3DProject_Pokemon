@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Ivysaur : PokemonStats
 {
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
 
         //스킬데이터 가져오기
         SkillData RazorLeaf = Resources.Load<SkillData>("Razor Leaf");

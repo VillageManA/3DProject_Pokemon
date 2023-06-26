@@ -68,16 +68,19 @@ public class PokemonStats : MonoBehaviour
     {
         skills.RemoveAt(count);
     }
-
+    public void ClearSkill()
+    {
+        skills.Clear();
+    }
     string jsonFileName = "DataBase/Pokemon";
     PokemonData[] pokemonArray;
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         TextAsset jsonFile = Resources.Load<TextAsset>(jsonFileName);
-        pokemonArray = JsonMapper.ToObject<PokemonData[]>(jsonFile.text);    
+        pokemonArray = JsonMapper.ToObject<PokemonData[]>(jsonFile.text);
     }
 
-    protected PokemonData[] GetPokemonArray()
+    public PokemonData[] GetPokemonArray()
     {
         return pokemonArray;
     }
@@ -95,5 +98,9 @@ public class PokemonData
     public int Speed;
     public int Type1;
     public int Type2;
+    public int Skill1;
+    public int Skill2;
+    public int Skill3;
+    public int Skill4;
 }
 

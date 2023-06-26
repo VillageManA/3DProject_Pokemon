@@ -40,6 +40,8 @@ public class BattleManager : MonoBehaviour
         {
             Damage = ((attacker.SpAttack * AttackerSpAttackRank) * skill.Damage * (attacker.Level * 2 / 5 + 2) / (target.SpDefence * TargetSpDefenceRank) / 50 + 2) * PropertyRank * DamageRank;
         }
+
+
         if (DamageRank > 1)
         {
             Explain_txt.text = "효과가 굉장했다!";
@@ -607,6 +609,12 @@ public class BattleManager : MonoBehaviour
     }
     public void CheckProPertyType(SkillData skill, PokemonStats pokemon)
     {
+        if(skill.propertyType == (SkillData.PropertyType)pokemon.Type1 || skill.propertyType == (SkillData.PropertyType)pokemon.Type2)
+        {
+            PropertyRank *= 1.5f;
+        }
+        #region 주석(자속확인)
+        /*
         if (skill.propertyType == SkillData.PropertyType.Normal)
         {
             if (pokemon.Type1 == PokemonStats.Type.Normal || pokemon.Type2 == PokemonStats.Type.Normal)
@@ -733,6 +741,8 @@ public class BattleManager : MonoBehaviour
                 PropertyRank *= 1.5f;
             }
         }//페어리타입 자속확인
+        */
+        #endregion
     }
     public void CheckStateRank(PokemonStats attacker, PokemonStats target)
     {

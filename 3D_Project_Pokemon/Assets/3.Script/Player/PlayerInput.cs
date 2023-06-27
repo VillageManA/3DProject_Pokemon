@@ -28,7 +28,7 @@ public class PlayerInput : MonoBehaviour
             {
 
                 transform.Rotate(Vector3.up * -90f * Time.deltaTime);
-                stateManager.ChangeState(State.LeftTurn);
+                stateManager.ChangeState(State.Run);
                 PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(-transform.right, 3f);
 
             }
@@ -41,7 +41,7 @@ public class PlayerInput : MonoBehaviour
             else if (Input.GetKey(KeyCode.D))
             {
                 transform.Rotate(Vector3.up * 90f * Time.deltaTime);
-                stateManager.ChangeState(State.RightTurn);
+                stateManager.ChangeState(State.Run);
                 PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(transform.right, 3f);
             }
             else
@@ -61,7 +61,7 @@ public class PlayerInput : MonoBehaviour
             {
 
                 transform.Rotate(Vector3.up * -90f * Time.deltaTime);
-                stateManager.ChangeState(State.LeftTurn);
+                stateManager.ChangeState(State.Move);
                 PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(-transform.right, 3f);
 
             }
@@ -74,7 +74,7 @@ public class PlayerInput : MonoBehaviour
             else if (Input.GetKey(KeyCode.D))
             {
                 transform.Rotate(Vector3.up * 90 * Time.deltaTime);
-                stateManager.ChangeState(State.RightTurn);
+                stateManager.ChangeState(State.Move);
                 PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(transform.right, 3f);
 
 

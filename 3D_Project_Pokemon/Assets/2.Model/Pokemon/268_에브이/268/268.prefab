@@ -1729,7 +1729,7 @@ Animator:
   m_GameObject: {fileID: 6243017698846620567}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7137e436d4f97c64788dd43f6c8689b9, type: 2}
+  m_Controller: {fileID: 22100000, guid: 77a168df0785c2e48997c5bfa32b7fcc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1750,24 +1750,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d132e12b7b5ca04894ce4ea93bb65df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  MaxHp: 0
-  Attack: 0
-  Defence: 0
-  SpAttack: 0
-  SpDefence: 0
-  Speed: 0
+  Name: "\uC5D0\uBE0C\uC774"
+  MaxHp: 65
+  Attack: 65
+  Defence: 60
+  SpAttack: 130
+  SpDefence: 95
+  Speed: 110
   Level: 0
   Exp: 0
-  Type1: 0
-  Type2: 0
+  Type1: 14
+  Type2: 18
   AttackRank: 0
   SpAttackRank: 0
   DefenceRank: 0
   SpDefenceRank: 0
   SpeedRank: 0
   HitrateRank: 0
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: a4cb152710cc9f74cafcbe253b6f2b67, type: 2}
+  - {fileID: 11400000, guid: 4e1c79f8de5215e458b6318ef759ec17, type: 2}
+  - {fileID: 11400000, guid: 42a77eb5ae886174c82e7f39974cc380, type: 2}
+  - {fileID: 11400000, guid: 815c6f5723eeec246bfbf8275fd6d679, type: 2}
 --- !u!1 &6370193360137505658
 GameObject:
   m_ObjectHideFlags: 0

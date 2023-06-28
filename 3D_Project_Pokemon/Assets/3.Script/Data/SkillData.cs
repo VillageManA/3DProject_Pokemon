@@ -11,6 +11,7 @@ public class SkillData : ScriptableObject
     [SerializeField] public int Damage;
     [SerializeField] public int Hitrate;
     [SerializeField] public int PP;
+    [SerializeField] public int MaxPP;
     [SerializeField] public int Number_of_Attack = 1;
 
     [Header("¼Ó¼º")]

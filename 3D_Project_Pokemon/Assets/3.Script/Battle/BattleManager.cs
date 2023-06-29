@@ -42,24 +42,11 @@ public class BattleManager : MonoBehaviour
         }
 
 
-        if (DamageRank > 1)
+        if(DamageRank==0)
         {
-            Explain_txt.text = "효과가 굉장했다!";
-        }
-        else if (DamageRank < 1)
-        {
-
-            Explain_txt.text = "효과가 별로인듯하다...";
-        }
-        else if (DamageRank == 0)
-        {
-            Explain_txt.text = "효과가 없는거같다.";
             Damage = 0;
         }
-        else
-        {
 
-        }
         target.Hp -= (int)Damage;
         Debug.Log("{0}에게 {1}만큼의 데미지를 주었다!" + target.name + Damage);
 

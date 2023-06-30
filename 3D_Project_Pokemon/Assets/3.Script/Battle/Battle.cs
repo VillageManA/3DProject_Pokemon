@@ -39,11 +39,11 @@ public class Battle : MonoBehaviour
     [Header("플레이어 스킬/전투 관련")]
     [SerializeField] GameObject PlayerSkill_obj;
     [SerializeField] GameObject PlayerSkill_Cursor;
-    [SerializeField] Text[] SkillName_txt;
-    [SerializeField] Text[] SkillPP_Txt;
-    [SerializeField] Image[] SkillType_Image;
-    [SerializeField] Image[] SkillBackGround_Image;
-    [SerializeField] Sprite[] SkillTypeSprite;
+    [SerializeField] Text[] Skill_Name_txt;
+    [SerializeField] Text[] Skill_PP_Txt;
+    [SerializeField] Image[] Skill_Type_Image;
+    [SerializeField] Image[] Skill_BackGround_Image;
+    [SerializeField] Sprite[] Skill_Type_Sprite;
 
     [Header("효과 문구")]
     [SerializeField] GameObject Effect_obj;
@@ -61,7 +61,8 @@ public class Battle : MonoBehaviour
     //전투 스킬 관련 변수
     public int Fight_Num;
     private int Enemy_Num;
-    Color[] SkillTypeColor;
+    Color[] Skill_Type_Color;
+    Color[] Skill_Icon_Color;
     private Vector3 Default_Fight_Cursor;
     private Vector3 Move_Fight_Cursor;
 
@@ -165,12 +166,12 @@ public class Battle : MonoBehaviour
     #region Fight 관련 메서드
     public void UpdateSkillUI() // 플레이어의 스킬4칸창 UI 업데이트
     {
-        for (int i = 0; i < SkillPP_Txt.Length; i++)
+        for (int i = 0; i < Skill_PP_Txt.Length; i++)
         {
-            SkillPP_Txt[i].text = string.Format("{0} / {1}", PlayerPokemon.skills[i].PP, PlayerPokemon.skills[i].MaxPP);
-            SkillType_Image[i].sprite = SkillTypeSprite[(int)PlayerPokemon.skills[i].propertyType];
-            SkillBackGround_Image[i].color = SkillTypeColor[i];
-
+            Skill_PP_Txt[i].text = string.Format("{0} / {1}", PlayerPokemon.skills[i].PP, PlayerPokemon.skills[i].MaxPP);
+            Skill_Type_Image[i].sprite = Skill_Type_Sprite[(int)PlayerPokemon.skills[i].propertyType];
+            Skill_Type_Image[i].color = Skill_Icon_Color[(int)PlayerPokemon.skills[i].propertyType];
+            Skill_BackGround_Image[i].color = Skill_Type_Color[i];
         }
     }
     public void FightUpKey()
@@ -224,7 +225,7 @@ public class Battle : MonoBehaviour
         }
     }
     public void Attack(PokemonStats Attacker, PokemonStats Target, int Num)
-    {  
+    {
         //플레이어
         BattleManager.OnDamage(Attacker.skills[Num], Attacker, Target);
         Attacker.GetComponent<Animator>().SetTrigger($"Attack{Num}");
@@ -251,25 +252,45 @@ public class Battle : MonoBehaviour
     public void SetSkillTypeColor()
     {
         //스킬타입에 따른 컬러
-        SkillTypeColor[0] = new Color(223 / 255f, 223 / 255f, 223 / 255f);
-        SkillTypeColor[1] = new Color(208 / 255f, 86 / 255f, 140 / 255f);
-        SkillTypeColor[2] = new Color(167 / 255f, 104 / 255f, 193 / 255f);
-        SkillTypeColor[3] = new Color(206 / 255f, 122 / 255f, 86 / 255f);
-        SkillTypeColor[4] = new Color(129 / 255f, 159 / 255f, 200 / 255f);
-        SkillTypeColor[5] = new Color(155 / 255f, 208 / 255f, 70 / 255f);
-        SkillTypeColor[6] = new Color(185 / 255f, 173 / 255f, 132 / 255f);
-        SkillTypeColor[7] = new Color(129 / 255f, 223 / 255f, 119 / 255f);
-        SkillTypeColor[8] = new Color(100 / 255f, 142 / 255f, 153 / 255f);
-        SkillTypeColor[9] = new Color(211 / 255f, 130 / 255f, 77 / 255f);
-        SkillTypeColor[10] = new Color(108 / 255f, 168 / 255f, 227 / 255f);
-        SkillTypeColor[11] = new Color(228 / 255f, 210 / 255f, 65 / 255f);
-        SkillTypeColor[12] = new Color(112 / 255f, 188 / 255f, 108 / 255f);
-        SkillTypeColor[13] = new Color(124 / 255f, 204 / 255f, 182 / 255f);
-        SkillTypeColor[14] = new Color(176 / 255f, 91 / 255f, 105 / 255f);
-        SkillTypeColor[15] = new Color(80 / 255f, 152 / 255f, 204 / 255f);
-        SkillTypeColor[16] = new Color(115 / 255f, 98 / 255f, 154 / 255f);
-        SkillTypeColor[17] = new Color(199 / 255f, 110 / 255f, 197 / 255f);
-        SkillTypeColor[18] = new Color(223 / 255f, 223 / 255f, 223 / 255f);
+        Skill_Type_Color[0] = new Color(223 / 255f, 223 / 255f, 223 / 255f);
+        Skill_Type_Color[1] = new Color(243 / 255f, 123 / 255f, 151 / 255f);
+        Skill_Type_Color[2] = new Color(205 / 255f, 135 / 255f, 241 / 255f);
+        Skill_Type_Color[3] = new Color(236 / 255f, 133 / 255f, 77 / 255f);
+        Skill_Type_Color[4] = new Color(158 / 255f, 200 / 255f, 255 / 255f);
+        Skill_Type_Color[5] = new Color(172 / 255f, 219 / 255f, 82 / 255f);
+        Skill_Type_Color[6] = new Color(192 / 255f, 178 / 255f, 132 / 137f);
+        Skill_Type_Color[7] = new Color(126 / 255f, 140 / 255f, 204 / 255f);
+        Skill_Type_Color[8] = new Color(114 / 255f, 173 / 255f, 195 / 255f);
+        Skill_Type_Color[9] = new Color(236 / 255f, 149 / 255f, 79 / 255f);
+        Skill_Type_Color[10] = new Color(104 / 255f, 171 / 255f, 238 / 255f);
+        Skill_Type_Color[11] = new Color(228 / 255f, 210 / 255f, 65 / 255f);
+        Skill_Type_Color[12] = new Color(127 / 255f, 209 / 255f, 119 / 255f);
+        Skill_Type_Color[13] = new Color(148 / 255f, 248 / 255f, 231 / 255f);
+        Skill_Type_Color[14] = new Color(245 / 255f, 138 / 255f, 143 / 255f);
+        Skill_Type_Color[15] = new Color(75 / 255f, 158 / 255f, 217 / 255f);
+        Skill_Type_Color[16] = new Color(155 / 255f, 142 / 255f, 210 / 255f);
+        Skill_Type_Color[17] = new Color(238 / 255f, 147 / 255f, 231 / 255f);
+        Skill_Type_Color[18] = new Color(223 / 255f, 223 / 255f, 223 / 255f);
+        //스킬 타입에 따른 아이콘 컬러
+        Skill_Icon_Color[0] = new Color(202 / 255f, 205 / 255f, 210 / 255f);
+        Skill_Icon_Color[1] = new Color(255 / 255f, 204 / 255f, 225 / 255f);
+        Skill_Icon_Color[2] = new Color(238 / 255f, 184 / 255f, 241 / 255f);
+        Skill_Icon_Color[3] = new Color(248 / 255f, 201 / 255f, 151 / 255f);
+        Skill_Icon_Color[4] = new Color(201 / 255f, 226 / 255f, 255 / 255f);
+        Skill_Icon_Color[5] = new Color(232 / 255f, 236 / 255f, 159 / 255f);
+        Skill_Icon_Color[6] = new Color(236 / 255f, 226 / 255f, 175 / 255f);
+        Skill_Icon_Color[7] = new Color(165 / 255f, 181 / 255f, 226 / 255f);
+        Skill_Icon_Color[8] = new Color(168 / 255f, 218 / 255f, 222 / 255f);
+        Skill_Icon_Color[9] = new Color(241 / 255f, 215 / 255f, 158 / 255f);
+        Skill_Icon_Color[10] = new Color(157 / 255f, 222 / 255f, 236 / 255f);
+        Skill_Icon_Color[11] = new Color(235 / 255f, 235 / 255f, 143 / 255f);
+        Skill_Icon_Color[12] = new Color(191 / 255f, 229 / 255f, 176 / 255f);
+        Skill_Icon_Color[13] = new Color(208 / 255f, 255 / 255f, 255 / 255f);
+        Skill_Icon_Color[14] = new Color(246 / 255f, 212 / 255f, 213 / 255f);
+        Skill_Icon_Color[15] = new Color(141 / 255f, 216 / 255f, 245 / 255f);
+        Skill_Icon_Color[16] = new Color(193 / 255f, 187 / 255f, 221 / 255f);
+        Skill_Icon_Color[17] = new Color(255 / 255f, 208 / 255f, 255 / 255f);
+        Skill_Icon_Color[18] = new Color(202 / 255f, 205 / 255f, 210 / 255f);
     }
 
 }

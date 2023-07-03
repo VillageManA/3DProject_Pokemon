@@ -2539,6 +2539,7 @@ GameObject:
   - component: {fileID: 1675082966221891426}
   - component: {fileID: 6377702874646386832}
   - component: {fileID: -5697262342657480815}
+  - component: {fileID: 7786458342949633839}
   m_Layer: 0
   m_Name: bulbasaur
   m_TagString: Pokemon
@@ -2623,6 +2624,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b7b802605b8300a4e9c5c86eeb21a11a, type: 2}
   - {fileID: 11400000, guid: 814159d2ad7798843be01a444520f189, type: 2}
   - {fileID: 11400000, guid: a5f52f5404a24b744ae9617167ecce77, type: 2}
+--- !u!114 &7786458342949633839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7877070474294175769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3efe1d24d63334aaea170fa87fa322, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ani: {fileID: 0}
 --- !u!1 &8017794124908597356
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 748781795437038153}
   - component: {fileID: 6637001904745477700}
   - component: {fileID: 6292615184647816680}
+  - component: {fileID: 7267353172667944475}
   m_Layer: 0
   m_Name: 630
   m_TagString: Pokemon
@@ -90,6 +91,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 24e91b0b0995c09488c3d98adde3ff0d, type: 2}
   - {fileID: 11400000, guid: a4cb152710cc9f74cafcbe253b6f2b67, type: 2}
   - {fileID: 11400000, guid: c2c0747c88e9e8b4980c2bd57437b6a8, type: 2}
+--- !u!114 &7267353172667944475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 65286530393582762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3efe1d24d63334aaea170fa87fa322, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ani: {fileID: 0}
 --- !u!1 &382878508161586517
 GameObject:
   m_ObjectHideFlags: 0

@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 1380372202573684395}
   - component: {fileID: 3249984049300037776}
   - component: {fileID: 6442266593944145591}
+  - component: {fileID: -144516739255747678}
   m_Layer: 0
   m_Name: 094
   m_TagString: Pokemon
@@ -260,24 +261,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d132e12b7b5ca04894ce4ea93bb65df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  MaxHp: 0
-  Attack: 0
-  Defence: 0
-  SpAttack: 0
-  SpDefence: 0
-  Speed: 0
+  Name: "\uBC1C\uCC59\uC774"
+  MaxHp: 40
+  Attack: 50
+  Defence: 40
+  SpAttack: 40
+  SpDefence: 40
+  Speed: 90
   Level: 0
   Exp: 0
-  Type1: 0
-  Type2: 0
+  Type1: 10
+  Type2: 18
   AttackRank: 0
   SpAttackRank: 0
   DefenceRank: 0
   SpDefenceRank: 0
   SpeedRank: 0
   HitrateRank: 0
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: 0230056da9be86e41bd6f00a0d1b3933, type: 2}
+  - {fileID: 11400000, guid: fad49c426463d714684d089805072af2, type: 2}
+  - {fileID: 11400000, guid: f282abaefcb8efe40b0cdf1964c3c4bf, type: 2}
+  - {fileID: 11400000, guid: b7b802605b8300a4e9c5c86eeb21a11a, type: 2}
+--- !u!114 &-144516739255747678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651207336247928770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3efe1d24d63334aaea170fa87fa322, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ani: {fileID: 0}
 --- !u!1 &986792515376029650
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,7 +27,6 @@ public class Battle : MonoBehaviour
     [SerializeField] GameObject EnemyUI_obj;
     [SerializeField] Text Enemy_Name;
     [SerializeField] Text Enemy_Level;
-    [SerializeField] Text Enemy_Hp;
     [SerializeField] Slider Enemy_Hpbar;
 
     [Header("로비 관련 오브젝트")]
@@ -55,16 +54,16 @@ public class Battle : MonoBehaviour
 
     //로비 관련 변수
     public int Robby_Num;
-    private Vector3 Default_Robby_Cursor;
-    private Vector3 Move_Robby_Cursor;
+    private Vector3 Default_Robby_Cursor = new Vector3(350, -65, 0);
+    private Vector3 Move_Robby_Cursor = new Vector3(0, 120, 0);
 
     //전투 스킬 관련 변수
     public int Fight_Num;
     private int Enemy_Num;
-    Color[] Skill_Type_Color;
-    Color[] Skill_Icon_Color;
-    private Vector3 Default_Fight_Cursor;
-    private Vector3 Move_Fight_Cursor;
+    Color[] Skill_Type_Color = new Color[19];
+    Color[] Skill_Icon_Color = new Color[19];
+    private Vector3 Default_Fight_Cursor = new Vector3(-300, 480, 0);
+    private Vector3 Move_Fight_Cursor = new Vector3(0, 120, 0);
 
     //가방 관련 변수
     public int Item_Num;
@@ -83,12 +82,16 @@ public class Battle : MonoBehaviour
         FindPokemon();
         UpdateStatsUI();
         UpdateSkillUI();
+        Player_Hpbar.value = PlayerPokemon.MaxHp;
+        Enemy_Hpbar.value = EnemyPokemon.MaxHp;
     }
     #region StatsUI 관련 메서드
     public void UpdateStatsUI() // 위아래 플레이어,상대 포켓몬 상태창 UI 업데이트
     {
         UpdatePlayerStatsUI();
         UpdateEnemyStatsUI();
+        UpdateHpBar(PlayerPokemon, Player_Hpbar);
+        UpdateHpBar(EnemyPokemon, Enemy_Hpbar);
     }
     public void UpdatePlayerStatsUI() //플레이어 상태창 UI 업데이트
     {
@@ -101,8 +104,29 @@ public class Battle : MonoBehaviour
     {
         Enemy_Name.text = EnemyPokemon.Name;
         Enemy_Level.text = string.Format("{0}", EnemyPokemon.Level);
-        Enemy_Hp.text = string.Format("{0} / {1}", EnemyPokemon.Hp, EnemyPokemon.MaxHp);
         Enemy_Hpbar.value = EnemyPokemon.Hp / EnemyPokemon.MaxHp;
+    }
+    public void UpdateHpBar(PokemonStats Target, Slider Target_Slider) //자연스럽게 Hpbar를 내리기위한 메서드
+    {
+        float targetHp_Value = Target.Hp;
+        float durationTime = 1f;
+
+        StartCoroutine(HpUpdate_Co(targetHp_Value, durationTime, Target_Slider));
+    }
+    private IEnumerator HpUpdate_Co(float targetHp_Value, float durationTime, Slider Target) //자연스럽게 HPbar를 내리기위한 코루틴
+    {
+        float elapsedTime = 0f;
+        float startHpValue = Target.value;
+        while (elapsedTime < durationTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / durationTime);
+            float smoothedValue = Mathf.Lerp(startHpValue, targetHp_Value, t);
+            Target.value = smoothedValue;
+            yield return null;
+
+        }
+        Target.value = targetHp_Value;
     }
     #endregion
     #region Robby 관련 메서드
@@ -162,7 +186,6 @@ public class Battle : MonoBehaviour
         }
     }
     #endregion
-
     #region Fight 관련 메서드
     public void UpdateSkillUI() // 플레이어의 스킬4칸창 UI 업데이트
     {
@@ -177,13 +200,13 @@ public class Battle : MonoBehaviour
     public void FightUpKey()
     {
         PlayerSkill_Cursor.transform.position += Move_Fight_Cursor;
-        Fight_Num++;
+        Fight_Num--;
         UpdateSkillUI();
     }
     public void FightDownKey()
     {
         PlayerSkill_Cursor.transform.position -= Move_Fight_Cursor;
-        Fight_Num--;
+        Fight_Num++;
         UpdateSkillUI();
     }
     public void FightEnterKey()
@@ -229,11 +252,14 @@ public class Battle : MonoBehaviour
         //플레이어
         BattleManager.OnDamage(Attacker.skills[Num], Attacker, Target);
         Attacker.GetComponent<Animator>().SetTrigger($"Attack{Num}");
-        Target.GetComponent<Animator>().SetTrigger("Be_Attacked");
-        UpdateStatsUI();
+        Be_Attacked(Target);
 
     }
-
+    public void Be_Attacked(PokemonStats Target)
+    {
+        Target.GetComponent<Animator>().SetTrigger("Be_Attacked");
+        UpdateStatsUI();
+    }
     public void FightExitKey()
     {
         isFight = false;
@@ -242,6 +268,24 @@ public class Battle : MonoBehaviour
         Robby_obj.SetActive(true);
     }
     #endregion
+    #region Pokemon 관련 메서드
+    #endregion
+    #region Run 관련 메서드
+    public void BattleRun()
+    {
+        int ran = Random.Range(0, 100);
+        if(ran<95)
+        {
+            //배틀종료
+        }
+    }
+    #endregion
+
+    public void ExitBattle()
+    {
+        //배틀 종료 
+        //데이터 베이스 정리하고 저쪽씬 로드
+    }
     public void FindPokemon()
     {
         GameObject Enemy = GameObject.FindGameObjectWithTag("Pokemon");

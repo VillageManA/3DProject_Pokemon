@@ -826,6 +826,7 @@ GameObject:
   - component: {fileID: 5325424146416328446}
   - component: {fileID: 1645922377583671459}
   - component: {fileID: -2126802339505211743}
+  - component: {fileID: -5500507654009628028}
   m_Layer: 0
   m_Name: 194
   m_TagString: Pokemon
@@ -902,6 +903,19 @@ MonoBehaviour:
   SpeedRank: 0
   HitrateRank: 0
   skills: []
+--- !u!114 &-5500507654009628028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2945493088885854463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d3efe1d24d63334aaea170fa87fa322, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ani: {fileID: 0}
 --- !u!1 &2956948502321568510
 GameObject:
   m_ObjectHideFlags: 0

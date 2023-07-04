@@ -27,7 +27,7 @@ public class DataManager : MonoBehaviour
         {
             pokemon[i].GetComponent<PokemonStats>().Name = pokemonData[i].Name;
             pokemon[i].GetComponent<PokemonStats>().MaxHp = pokemonData[i].MaxHp;
-            pokemon[i].GetComponent<PokemonStats>().Hp = pokemonData[i].Hp;
+            pokemon[i].GetComponent<PokemonStats>().Hp = pokemonData[i].MaxHp;
             pokemon[i].GetComponent<PokemonStats>().Attack = pokemonData[i].Attack;
             pokemon[i].GetComponent<PokemonStats>().Defence = pokemonData[i].Defence;
             pokemon[i].GetComponent<PokemonStats>().SpAttack = pokemonData[i].SpAttack;
@@ -44,7 +44,11 @@ public class DataManager : MonoBehaviour
             pokemon[i].GetComponent<PokemonStats>().AddSkill(PokemonSkill[pokemonData[i].Skill2]);
             pokemon[i].GetComponent<PokemonStats>().AddSkill(PokemonSkill[pokemonData[i].Skill3]);
             pokemon[i].GetComponent<PokemonStats>().AddSkill(PokemonSkill[pokemonData[i].Skill4]);
-
+            pokemon[i].GetComponent<PokemonStats>().SkillPP = new int[4];
+            for (int k=0; k<4; k++)
+            {
+                pokemon[i].GetComponent<PokemonStats>().SkillPP[k] = pokemon[i].GetComponent<PokemonStats>().skills[k].MaxPP;
+            }
         }
 
     }

@@ -2602,6 +2602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d132e12b7b5ca04894ce4ea93bb65df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 45
   Name: "\uC774\uC0C1\uD574\uC528"
   MaxHp: 45
   Attack: 49
@@ -2613,6 +2614,7 @@ MonoBehaviour:
   Exp: 0
   Type1: 12
   Type2: 18
+  SkillPP: 
   AttackRank: 0
   SpAttackRank: 0
   DefenceRank: 0
@@ -2636,7 +2638,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3efe1d24d63334aaea170fa87fa322, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ani: {fileID: 0}
+  onAttackEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  onDirectAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  onHitEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8017794124908597356
 GameObject:
   m_ObjectHideFlags: 0

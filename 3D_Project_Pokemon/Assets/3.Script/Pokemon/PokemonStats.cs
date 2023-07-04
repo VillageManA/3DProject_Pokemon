@@ -6,7 +6,7 @@ using LitJson;
 public class PokemonStats : MonoBehaviour
 {
     System.Random random = new System.Random();
-    private int hp;
+    [SerializeField] private int hp;
     public int Hp
     {
         get { return hp; }
@@ -28,6 +28,8 @@ public class PokemonStats : MonoBehaviour
     [SerializeField] public int Exp;
     [SerializeField] public Type Type1;
     [SerializeField] public Type Type2;
+    [SerializeField] public int[] SkillPP;
+    [SerializeField] public bool isAlive = true;
     public enum Type
     {
         Normal, Fight, Poison, Earth, Flight, Bug, Rock, Ghost, Steel, Fire, Water, Electricty, Grass, Ice, Esper, Dragon, Evil, Fairy, None

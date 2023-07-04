@@ -46,9 +46,10 @@ public class BattleManager : MonoBehaviour
         {
             Damage = 0;
         }
-
+        
         target.Hp -= (int)Damage;
-        Debug.Log("{0}에게 {1}만큼의 데미지를 주었다!" + target.name + Damage);
+        Debug.Log($"{attacker.Name}은 {skill.Name} 을 사용했다");
+        Debug.Log($"{target.Name}에게 {(int)Damage}만큼의 데미지를 주었다!");
 
         //배틀 변수값들 초기화
         PropertyRank = 1;

@@ -928,6 +928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d132e12b7b5ca04894ce4ea93bb65df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 0
   Name: 
   MaxHp: 0
   Attack: 0
@@ -1511,7 +1512,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 0}
+  m_AnchoredPosition: {x: -90, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &570502220
@@ -1541,7 +1542,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 50
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
@@ -1571,7 +1572,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &664425424
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2174,6 +2175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d132e12b7b5ca04894ce4ea93bb65df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 0
   Name: 
   MaxHp: 0
   Attack: 0
@@ -2226,7 +2228,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 0}
+  m_AnchoredPosition: {x: -90, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &992472767
@@ -2256,7 +2258,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 50
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
@@ -2913,6 +2915,7 @@ GameObject:
   - component: {fileID: 1149348954}
   - component: {fileID: 1149348953}
   - component: {fileID: 1149348957}
+  - component: {fileID: 1149348958}
   m_Layer: 5
   m_Name: BattleUI_Canvas
   m_TagString: Untagged
@@ -3017,11 +3020,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ba2e480b5e96f54fb4af2a4491381f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isRobby: 0
+  isRobby: 1
   isFight: 0
   isItem: 0
   isPokemon: 0
   isAttack: 0
+  PlayerPokemon: {fileID: 0}
+  EnemyPokemon: {fileID: 0}
   PlayerUI_obj: {fileID: 1240644041}
   Player_Name: {fileID: 921995855}
   Player_Level: {fileID: 1843978594}
@@ -3091,6 +3096,33 @@ MonoBehaviour:
   Fight_Num: 0
   Item_Num: 0
   PokemonUI_Num: 0
+--- !u!114 &1149348958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149348952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7067d86830edf20419e9685cbaf3295d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DamageRank: 1
+  PropertyRank: 1
+  AttackerAttackRank: 1
+  AttackerSpAttackRank: 1
+  AttackerDefenceRank: 1
+  AttackerSpDefenceRank: 1
+  AttackerSpeedRank: 1
+  AttackerHitrateRank: 1
+  TargetAttackRank: 1
+  TargetSpAttackRank: 1
+  TargetDefenceRank: 1
+  TargetSpDefenceRank: 1
+  TargetSpeedRank: 1
+  TargetHitrateRank: 1
+  Explain_txt: {fileID: 0}
 --- !u!1001 &1216108597
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3137,6 +3169,10 @@ PrefabInstance:
     - target: {fileID: 676122527995480777, guid: a18eff0dd720fc74aa048545f6ea03f6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 1.2613866
+      objectReference: {fileID: 0}
+    - target: {fileID: 1123286133975341594, guid: a18eff0dd720fc74aa048545f6ea03f6, type: 3}
+      propertyPath: Level
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1154063350473325045, guid: a18eff0dd720fc74aa048545f6ea03f6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3760,7 +3796,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 0}
+  m_AnchoredPosition: {x: -90, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1277531640
@@ -3790,7 +3826,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 50
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
@@ -4093,7 +4129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1474173130
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5472,6 +5508,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1720698688493066828, guid: 2503d04e230dd4642b9cdc911477dbf7, type: 3}
+      propertyPath: onAttackEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1720698688493066828, guid: 2503d04e230dd4642b9cdc911477dbf7, type: 3}
+      propertyPath: onAttackEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1720698688493066828, guid: 2503d04e230dd4642b9cdc911477dbf7, type: 3}
+      propertyPath: onAttackEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -1720698688493066828, guid: 2503d04e230dd4642b9cdc911477dbf7, type: 3}
+      propertyPath: onAttackEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -1720698688493066828, guid: 2503d04e230dd4642b9cdc911477dbf7, type: 3}
+      propertyPath: onAttackEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -1720698688493066828, guid: 2503d04e230dd4642b9cdc911477dbf7, type: 3}
+      propertyPath: onAttackEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -1720698688493066828, guid: 2503d04e230dd4642b9cdc911477dbf7, type: 3}
+      propertyPath: onAttackEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 111442042496021487, guid: 2503d04e230dd4642b9cdc911477dbf7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 13.38233
@@ -5783,6 +5847,10 @@ PrefabInstance:
     - target: {fileID: 6358635640858496461, guid: 2503d04e230dd4642b9cdc911477dbf7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 19.455612
+      objectReference: {fileID: 0}
+    - target: {fileID: 6671560027019229490, guid: 2503d04e230dd4642b9cdc911477dbf7, type: 3}
+      propertyPath: Level
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6889110540160178012, guid: 2503d04e230dd4642b9cdc911477dbf7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7052,7 +7120,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 0}
+  m_AnchoredPosition: {x: -90, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2108341150
@@ -7082,7 +7150,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 50
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1

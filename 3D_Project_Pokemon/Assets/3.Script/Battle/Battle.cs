@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class Battle : MonoBehaviour
 {
-    public bool isRobby;
+    public bool isRobby = true;
     public bool isFight;
     public bool isItem;
     public bool isPokemon;
     public bool isAttack;
 
-    PokemonStats PlayerPokemon;
-    PokemonStats EnemyPokemon;
+    [SerializeField] PokemonStats PlayerPokemon;
+    [SerializeField] PokemonStats EnemyPokemon;
     BattleManager BattleManager;
 
     [Header("UI 오브젝트")]
@@ -54,12 +54,14 @@ public class Battle : MonoBehaviour
 
     //로비 관련 변수
     public int Robby_Num;
+    private int Max_Robby_Num = 4;
     private Vector3 Default_Robby_Cursor = new Vector3(350, -65, 0);
     private Vector3 Move_Robby_Cursor = new Vector3(0, 120, 0);
 
     //전투 스킬 관련 변수
     public int Fight_Num;
     private int Enemy_Num;
+    private int Max_Fight_Num = 4;
     Color[] Skill_Type_Color = new Color[19];
     Color[] Skill_Icon_Color = new Color[19];
     private Vector3 Default_Fight_Cursor = new Vector3(-300, 480, 0);
@@ -75,6 +77,7 @@ public class Battle : MonoBehaviour
     private Vector3 Default_Pokemon_Cursor;
     private Vector3 Move_Pokemon_Cursor;
 
+    private Coroutine hpUpdate;
     private void Awake()
     {
         BattleManager = FindObjectOfType<BattleManager>();
@@ -84,6 +87,54 @@ public class Battle : MonoBehaviour
         UpdateSkillUI();
         Player_Hpbar.value = PlayerPokemon.MaxHp;
         Enemy_Hpbar.value = EnemyPokemon.MaxHp;
+    }
+    private void Update()
+    {
+        if (isRobby)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                RobbyUpKey();
+
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                RobbyDownKey();
+            }
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+            {
+                RobbyEneterKey();
+                return;
+            }
+        } //로비에서 입력
+        if (isFight)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                FightUpKey();
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                FightDownKey();
+            }
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+            {
+                FightEnterKey();
+                return;
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                FightExitKey();
+            }
+        } // 파이트 상태일때 입력
+        if (isItem)
+        {
+
+        } //가방상태일때 입력
+        if (isPokemon)
+        {
+
+        } //포켓몬 교체시 입력
     }
     #region StatsUI 관련 메서드
     public void UpdateStatsUI() // 위아래 플레이어,상대 포켓몬 상태창 UI 업데이트
@@ -96,19 +147,19 @@ public class Battle : MonoBehaviour
     public void UpdatePlayerStatsUI() //플레이어 상태창 UI 업데이트
     {
         Player_Name.text = PlayerPokemon.Name;
-        Player_Level.text = string.Format("{0}", PlayerPokemon.Level);
+        Player_Level.text = string.Format("Lv.{0}", PlayerPokemon.Level);
         Player_Hp.text = string.Format("{0} / {1}", PlayerPokemon.Hp, PlayerPokemon.MaxHp);
-        Player_Hpbar.value = PlayerPokemon.Hp / PlayerPokemon.MaxHp;
+        //Player_Hpbar.value = PlayerPokemon.Hp / PlayerPokemon.MaxHp;
     }
     public void UpdateEnemyStatsUI() // 상대 포켓몬 상태창 UI 업데이트
     {
         Enemy_Name.text = EnemyPokemon.Name;
-        Enemy_Level.text = string.Format("{0}", EnemyPokemon.Level);
-        Enemy_Hpbar.value = EnemyPokemon.Hp / EnemyPokemon.MaxHp;
+        Enemy_Level.text = string.Format("Lv.{0}", EnemyPokemon.Level);
+        //Enemy_Hpbar.value = EnemyPokemon.Hp / EnemyPokemon.MaxHp;
     }
     public void UpdateHpBar(PokemonStats Target, Slider Target_Slider) //자연스럽게 Hpbar를 내리기위한 메서드
     {
-        float targetHp_Value = Target.Hp;
+        float targetHp_Value = (float)Target.Hp / Target.MaxHp;
         float durationTime = 1f;
 
         StartCoroutine(HpUpdate_Co(targetHp_Value, durationTime, Target_Slider));
@@ -132,7 +183,7 @@ public class Battle : MonoBehaviour
     #region Robby 관련 메서드
     public void UpdateRobbyUI() //로비 4칸 창 UI 업데이트
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < Max_Robby_Num; i++)
         {
             Robby_BackGround[i].color = Color.white;
             Robby_Txt[i].color = Color.black;
@@ -142,14 +193,22 @@ public class Battle : MonoBehaviour
     }
     public void RobbyUpKey()
     {
+        if (Robby_Num <= 0)
+        {
+            return;
+        }
         Robby_Cursor.transform.position += Move_Robby_Cursor;
-        Robby_Num++;
+        Robby_Num--;
         UpdateRobbyUI();
     }
     public void RobbyDownKey()
     {
+        if (Robby_Num >= Max_Robby_Num - 1)
+        {
+            return;
+        }
         Robby_Cursor.transform.position -= Move_Robby_Cursor;
-        Robby_Num--;
+        Robby_Num++;
         UpdateRobbyUI();
     }
     public void RobbyEneterKey()
@@ -168,19 +227,22 @@ public class Battle : MonoBehaviour
                 {
                     isRobby = false;
                     isPokemon = true;
-
+                    Debug.Log("포켓몬 교체칸");
                 }
                 break;
             case 2:
                 {
                     isRobby = false;
                     isItem = true;
+                    Debug.Log("아이템 교체칸");
                 }
                 break;
             case 3:
                 {
                     isRobby = false;
+                    ExitBattle();
                     //확률로 배틀 런
+                    Debug.Log("도망갔당");
                 }
                 break;
         }
@@ -189,22 +251,31 @@ public class Battle : MonoBehaviour
     #region Fight 관련 메서드
     public void UpdateSkillUI() // 플레이어의 스킬4칸창 UI 업데이트
     {
-        for (int i = 0; i < Skill_PP_Txt.Length; i++)
+        for (int i = 0; i < Max_Fight_Num; i++)
         {
-            Skill_PP_Txt[i].text = string.Format("{0} / {1}", PlayerPokemon.skills[i].PP, PlayerPokemon.skills[i].MaxPP);
+            Skill_Name_txt[i].text = string.Format(PlayerPokemon.skills[i].Name);
+            Skill_PP_Txt[i].text = string.Format("{0} / {1}", PlayerPokemon.SkillPP[i], PlayerPokemon.skills[i].MaxPP);
             Skill_Type_Image[i].sprite = Skill_Type_Sprite[(int)PlayerPokemon.skills[i].propertyType];
             Skill_Type_Image[i].color = Skill_Icon_Color[(int)PlayerPokemon.skills[i].propertyType];
-            Skill_BackGround_Image[i].color = Skill_Type_Color[i];
+            Skill_BackGround_Image[i].color = Skill_Type_Color[(int)PlayerPokemon.skills[i].propertyType];
         }
     }
     public void FightUpKey()
     {
+        if (Fight_Num <= 0)
+        {
+            return;
+        }
         PlayerSkill_Cursor.transform.position += Move_Fight_Cursor;
         Fight_Num--;
         UpdateSkillUI();
     }
     public void FightDownKey()
     {
+        if (Fight_Num >= Max_Fight_Num - 1)
+        {
+            return;
+        }
         PlayerSkill_Cursor.transform.position -= Move_Fight_Cursor;
         Fight_Num++;
         UpdateSkillUI();
@@ -249,9 +320,14 @@ public class Battle : MonoBehaviour
     }
     public void Attack(PokemonStats Attacker, PokemonStats Target, int Num)
     {
+        if(Attacker.SkillPP[Num] <=0) // pp가 0 일시 사용 못하도록
+        {
+            return;
+        }
+        Attacker.SkillPP[Num]--;
         //플레이어
+        Attacker.GetComponent<Animator>().SetTrigger($"Attack{Num + 1}");
         BattleManager.OnDamage(Attacker.skills[Num], Attacker, Target);
-        Attacker.GetComponent<Animator>().SetTrigger($"Attack{Num}");
         Be_Attacked(Target);
 
     }
@@ -259,13 +335,22 @@ public class Battle : MonoBehaviour
     {
         Target.GetComponent<Animator>().SetTrigger("Be_Attacked");
         UpdateStatsUI();
-    }
+    }       
     public void FightExitKey()
     {
         isFight = false;
         isRobby = true;
         PlayerSkill_obj.SetActive(false);
         Robby_obj.SetActive(true);
+    }
+    public void EndTurn()
+    {
+        Fight_Num = 0;
+        Robby_Num = 0;
+        isAttack = false;
+        isRobby = true;
+        Robby_obj.SetActive(true);
+
     }
     #endregion
     #region Pokemon 관련 메서드
@@ -274,13 +359,39 @@ public class Battle : MonoBehaviour
     public void BattleRun()
     {
         int ran = Random.Range(0, 100);
-        if(ran<95)
+        if (ran < 95)
         {
             //배틀종료
         }
     }
     #endregion
-
+    #region 텍스트 관련
+    public void Text_Play(string str)
+    {
+        Effect_obj.SetActive(true);
+        Effect_Txt.text = string.Format(str);
+        Invoke("Text_Close", 0.3f);
+    }
+    public void Text_Play(PokemonStats Target , string str)
+    {
+        Effect_obj.SetActive(true);
+        Effect_Txt.text = string.Format(str);
+        Invoke("Text_Close", 0.3f);
+    }
+    public void Text_Close()
+    {
+        Effect_obj.SetActive(false);
+    }
+    #endregion
+    public void CheckDead(PokemonStats Target)
+    {
+        if (Target.Hp > 0)
+        {
+            return;
+        }
+        Target.isAlive = false;
+    }
+    
     public void ExitBattle()
     {
         //배틀 종료 

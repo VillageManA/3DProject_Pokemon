@@ -42,12 +42,17 @@ public class BattleManager : MonoBehaviour
         }
 
 
-        if(DamageRank==0)
+        if (DamageRank == 0)
         {
             Damage = 0;
         }
-        
+
         target.Hp -= (int)Damage;
+        if (target.Hp < 0)
+        {
+            target.Hp = 0;
+            target.isAlive = false;
+        }
         Debug.Log($"{attacker.Name}은 {skill.Name} 을 사용했다");
         Debug.Log($"{target.Name}에게 {(int)Damage}만큼의 데미지를 주었다!");
 
@@ -597,7 +602,7 @@ public class BattleManager : MonoBehaviour
     }
     public void CheckProPertyType(SkillData skill, PokemonStats pokemon)
     {
-        if(skill.propertyType == (SkillData.PropertyType)pokemon.Type1 || skill.propertyType == (SkillData.PropertyType)pokemon.Type2)
+        if (skill.propertyType == (SkillData.PropertyType)pokemon.Type1 || skill.propertyType == (SkillData.PropertyType)pokemon.Type2)
         {
             PropertyRank *= 1.5f;
         }

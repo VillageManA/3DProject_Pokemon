@@ -64,8 +64,11 @@ public class Battle : MonoBehaviour
     private int Max_Fight_Num = 4;
     Color[] Skill_Type_Color = new Color[19];
     Color[] Skill_Icon_Color = new Color[19];
-    private Vector3 Default_Fight_Cursor = new Vector3(-300, 480, 0);
+    private Vector3 Default_Fight_Cursor = new Vector3(660, -60, 0);
     private Vector3 Move_Fight_Cursor = new Vector3(0, 120, 0);
+    PokemonAnimationEvent attackerAnimationEvent;
+    PokemonAnimationEvent targetAnimationEvent;
+
 
     //가방 관련 변수
     public int Item_Num;
@@ -221,6 +224,7 @@ public class Battle : MonoBehaviour
                     isFight = true;
                     Robby_obj.SetActive(false);
                     PlayerSkill_obj.SetActive(true);
+                    UpdateSkillUI();
                 }
                 break;
             case 1:
@@ -287,15 +291,11 @@ public class Battle : MonoBehaviour
 
         if (PlayerPokemon.Speed > EnemyPokemon.Speed) // 내가 속도가 빠르다면
         {
-            Attack(PlayerPokemon, EnemyPokemon, Fight_Num);
-            Attack(EnemyPokemon, PlayerPokemon, Enemy_Num);
-
+            FirstPlayerAttack();
         }
         else if (PlayerPokemon.Speed < EnemyPokemon.Speed) //상대가 속도가 빠르다면
         {
-            Attack(EnemyPokemon, PlayerPokemon, Enemy_Num);
-
-            Attack(PlayerPokemon, EnemyPokemon, Fight_Num);
+            FirstEnemyAttack();
         }
         else if (PlayerPokemon.Speed == EnemyPokemon.Speed) //동속시 랜덤
         {
@@ -304,15 +304,12 @@ public class Battle : MonoBehaviour
             {
                 case 0:
                     {
-                        Attack(PlayerPokemon, EnemyPokemon, Fight_Num);
-
-                        Attack(EnemyPokemon, PlayerPokemon, Enemy_Num);
+                        FirstPlayerAttack();
                     }
                     break;
                 case 1:
                     {
-                        Attack(EnemyPokemon, PlayerPokemon, Enemy_Num);
-                        Attack(PlayerPokemon, EnemyPokemon, Fight_Num);
+                        FirstEnemyAttack();
                     }
                     break;
             }
@@ -320,37 +317,92 @@ public class Battle : MonoBehaviour
     }
     public void Attack(PokemonStats Attacker, PokemonStats Target, int Num)
     {
-        if(Attacker.SkillPP[Num] <=0) // pp가 0 일시 사용 못하도록
+        isFight = false;
+        isAttack = true;
+        PlayerSkill_obj.SetActive(false);
+        initializeAnimation(Attacker , Target);
+        if (Attacker.SkillPP[Num] <=0) // pp가 0 일시 사용 못하도록
         {
             return;
         }
         Attacker.SkillPP[Num]--;
-        //플레이어
         Attacker.GetComponent<Animator>().SetTrigger($"Attack{Num + 1}");
         BattleManager.OnDamage(Attacker.skills[Num], Attacker, Target);
-        Be_Attacked(Target);
-
+        Text_Play(string.Format("{0}의 \n{1}!",Attacker.Name , Attacker.skills[Num].Name)); //데미지 문구        
     }
-    public void Be_Attacked(PokemonStats Target)
+
+    public void FirstPlayerAttack() //플레이어의 선공
+    {
+        
+        StartCoroutine(FirstAttack_co(PlayerPokemon , EnemyPokemon , Fight_Num , Enemy_Num));
+    }
+    public void FirstEnemyAttack() // 상대방의 선공
+    {
+        StartCoroutine(FirstAttack_co(EnemyPokemon, PlayerPokemon , Enemy_Num , Fight_Num));
+    }
+    private IEnumerator FirstAttack_co(PokemonStats FirstPokemon , PokemonStats otherPokemon , int firstAttack_Num , int otherAttack_Num) //공격 딜레이를 위한 코루틴
+    {
+        Attack(FirstPokemon, otherPokemon, firstAttack_Num);
+        yield return new WaitUntil(() => isAttack == false);
+        yield return new WaitForSeconds(1f);
+        Attack(otherPokemon, FirstPokemon, otherAttack_Num);
+        yield return new WaitUntil(() => isAttack == false);
+        yield return new WaitForSeconds(1f);
+        EndTurn();
+    }
+    public void Be_Attacked(PokemonStats Target) //피격모션 이벤트
     {
         Target.GetComponent<Animator>().SetTrigger("Be_Attacked");
-        UpdateStatsUI();
     }       
-    public void FightExitKey()
+    public void initializeAnimation(PokemonStats Attacker, PokemonStats Target) // 애니메이션 이벤트에 등록
+    {
+        attackerAnimationEvent = Attacker.GetComponent<PokemonAnimationEvent>();
+        targetAnimationEvent = Target.GetComponent<PokemonAnimationEvent>();
+
+        attackerAnimationEvent.onHitEvent.RemoveAllListeners();
+        attackerAnimationEvent.onAttackEvent.RemoveAllListeners();
+        attackerAnimationEvent.onDirectAttack.RemoveAllListeners();
+
+        targetAnimationEvent.onHitEvent.RemoveAllListeners();
+        targetAnimationEvent.onAttackEvent.RemoveAllListeners();
+        targetAnimationEvent.onDirectAttack.RemoveAllListeners();
+        if (attackerAnimationEvent != null)
+        {
+            // onHitEvent 이벤트에 Be_Attacked 메서드를 등록
+            attackerAnimationEvent.onHitEvent.AddListener(() => EndAttack());
+            attackerAnimationEvent.onAttackEvent.AddListener(() => Be_Attacked(Target));  //파티클 -> 적발사 메서드 로 바꿀것
+            attackerAnimationEvent.onDirectAttack.AddListener(() => Be_Attacked(Target));
+        }
+        if (targetAnimationEvent != null)
+        {
+            // onHitEvent 이벤트에 Be_Attacked 메서드를 등록
+            targetAnimationEvent.onHitEvent.AddListener(() => EndAttack());
+            targetAnimationEvent.onAttackEvent.AddListener(() => Be_Attacked(Target)); //파티클 -> 적발사 메서드 로 바꿀것
+            targetAnimationEvent.onDirectAttack.AddListener(() => Be_Attacked(Target));
+        }
+    }
+    public void FightExitKey() //ESC키 입력시 로비로 넘어가기
     {
         isFight = false;
         isRobby = true;
         PlayerSkill_obj.SetActive(false);
         Robby_obj.SetActive(true);
     }
-    public void EndTurn()
+    public void EndAttack() // 한마리의 공격이 끝나고 나서
     {
+        isAttack = false;
+        EnemyUI_obj.SetActive(true);
+        PlayerUI_obj.SetActive(true);
+        UpdateStatsUI();
+    }
+    public void EndTurn() // 둘다 공격이 끝나고 턴종료시
+    {
+        PlayerSkill_Cursor.transform.localPosition = Default_Fight_Cursor;
+        Robby_Cursor.transform.localPosition = Default_Robby_Cursor;
         Fight_Num = 0;
         Robby_Num = 0;
-        isAttack = false;
         isRobby = true;
         Robby_obj.SetActive(true);
-
     }
     #endregion
     #region Pokemon 관련 메서드
@@ -368,30 +420,19 @@ public class Battle : MonoBehaviour
     #region 텍스트 관련
     public void Text_Play(string str)
     {
+        PlayerUI_obj.SetActive(false);
+        EnemyUI_obj.SetActive(false);
         Effect_obj.SetActive(true);
         Effect_Txt.text = string.Format(str);
-        Invoke("Text_Close", 0.3f);
-    }
-    public void Text_Play(PokemonStats Target , string str)
-    {
-        Effect_obj.SetActive(true);
-        Effect_Txt.text = string.Format(str);
-        Invoke("Text_Close", 0.3f);
+        Invoke("Text_Close", 0.8f);
     }
     public void Text_Close()
     {
+
         Effect_obj.SetActive(false);
     }
     #endregion
-    public void CheckDead(PokemonStats Target)
-    {
-        if (Target.Hp > 0)
-        {
-            return;
-        }
-        Target.isAlive = false;
-    }
-    
+
     public void ExitBattle()
     {
         //배틀 종료 

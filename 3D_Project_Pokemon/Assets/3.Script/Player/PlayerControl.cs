@@ -32,6 +32,7 @@ public class PlayerControl : MonoBehaviour
         playerMoveMent = GetComponent<PlayerMoveMent>();
     }
 
+    List<Inventory> playerInventory = new List<Inventory>();
     List<GameObject> Pokemon = new List<GameObject>();
 
 

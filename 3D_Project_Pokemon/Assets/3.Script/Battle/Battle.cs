@@ -44,6 +44,20 @@ public class Battle : MonoBehaviour
     [SerializeField] Image[] Skill_BackGround_Image;
     [SerializeField] Sprite[] Skill_Type_Sprite;
 
+    [Header("포켓몬 관련")]
+    [SerializeField] GameObject Pokemon_obj;
+    [SerializeField] GameObject Pokemon_Cursor;
+    [SerializeField] Image Pokemon_Right_Image;
+    [SerializeField] GameObject[] Pokemon_Slot;
+    [SerializeField] Text[] Pokemon_Name;
+    [SerializeField] Text[] Pokemon_Level;
+    [SerializeField] Text[] Pokemon_Hp;
+    [SerializeField] Slider[] Pokemon_Hp_Bar;
+    [SerializeField] Image[] Pokemon_Icon;
+
+    [Header("임시용 포켓몬배열")]
+    [SerializeField] PokemonStats[] Temp_Pokemon;
+
     [Header("효과 문구")]
     [SerializeField] GameObject Effect_obj;
     [SerializeField] Text Effect_Txt;
@@ -77,19 +91,27 @@ public class Battle : MonoBehaviour
 
     //포켓몬 관련 변수
     public int PokemonUI_Num;
+    private int Max_PokemonUI_Num = 6;
     private Vector3 Default_Pokemon_Cursor;
-    private Vector3 Move_Pokemon_Cursor;
+    private Vector3 Move_Pokemon_Cursor = new Vector3(0, 140, 0);
 
-    private Coroutine hpUpdate;
+    //포켓몬 체력 관련 변수
+    private Color GreenHp = new Color(2f / 255f, 226f / 255f, 0f / 255f);
+    private Color OrangeHp = new Color(255f / 255f, 174f / 255f, 45f / 255f);
+    private Color RedHp = new Color(255f / 255f, 50f / 255f, 37f / 255f);
     private void Awake()
     {
         BattleManager = FindObjectOfType<BattleManager>();
         SetSkillTypeColor();
         FindPokemon();
+        PlayerPokemon.Setting_LevelStats();
+        EnemyPokemon.Setting_LevelStats();
         UpdateStatsUI();
         UpdateSkillUI();
-        Player_Hpbar.value = PlayerPokemon.MaxHp;
-        Enemy_Hpbar.value = EnemyPokemon.MaxHp;
+        Player_Hpbar.value = (float)PlayerPokemon.Hp / PlayerPokemon.MaxHp;
+        Enemy_Hpbar.value = (float)EnemyPokemon.Hp/EnemyPokemon.MaxHp;
+        SetColor_Slider(Player_Hpbar);
+        SetColor_Slider(Enemy_Hpbar);
     }
     private void Update()
     {
@@ -136,7 +158,23 @@ public class Battle : MonoBehaviour
         } //가방상태일때 입력
         if (isPokemon)
         {
-
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                PokemonUpKey();
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                PokemonDownKey();
+            }
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+            {
+                PokemonEnterKey();
+                return;
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                PokemonExitKey();
+            }
         } //포켓몬 교체시 입력
     }
     #region StatsUI 관련 메서드
@@ -177,6 +215,7 @@ public class Battle : MonoBehaviour
             float t = Mathf.Clamp01(elapsedTime / durationTime);
             float smoothedValue = Mathf.Lerp(startHpValue, targetHp_Value, t);
             Target.value = smoothedValue;
+            SetColor_Slider(Target);
             yield return null;
 
         }
@@ -231,7 +270,9 @@ public class Battle : MonoBehaviour
                 {
                     isRobby = false;
                     isPokemon = true;
-                    Debug.Log("포켓몬 교체칸");
+                    Robby_obj.SetActive(false);
+                    Pokemon_obj.SetActive(true);
+                    UpdatePokemonUI();
                 }
                 break;
             case 2:
@@ -320,27 +361,27 @@ public class Battle : MonoBehaviour
         isFight = false;
         isAttack = true;
         PlayerSkill_obj.SetActive(false);
-        initializeAnimation(Attacker , Target);
-        if (Attacker.SkillPP[Num] <=0) // pp가 0 일시 사용 못하도록
+        initializeAnimation(Attacker, Target);
+        if (Attacker.SkillPP[Num] <= 0) // pp가 0 일시 사용 못하도록
         {
             return;
         }
         Attacker.SkillPP[Num]--;
         Attacker.GetComponent<Animator>().SetTrigger($"Attack{Num + 1}");
         BattleManager.OnDamage(Attacker.skills[Num], Attacker, Target);
-        Text_Play(string.Format("{0}의 \n{1}!",Attacker.Name , Attacker.skills[Num].Name)); //데미지 문구        
+        Text_Play(string.Format("{0}의 \n{1}!", Attacker.Name, Attacker.skills[Num].Name)); //데미지 문구        
     }
 
     public void FirstPlayerAttack() //플레이어의 선공
     {
-        
-        StartCoroutine(FirstAttack_co(PlayerPokemon , EnemyPokemon , Fight_Num , Enemy_Num));
+
+        StartCoroutine(FirstAttack_co(PlayerPokemon, EnemyPokemon, Fight_Num, Enemy_Num));
     }
     public void FirstEnemyAttack() // 상대방의 선공
     {
-        StartCoroutine(FirstAttack_co(EnemyPokemon, PlayerPokemon , Enemy_Num , Fight_Num));
+        StartCoroutine(FirstAttack_co(EnemyPokemon, PlayerPokemon, Enemy_Num, Fight_Num));
     }
-    private IEnumerator FirstAttack_co(PokemonStats FirstPokemon , PokemonStats otherPokemon , int firstAttack_Num , int otherAttack_Num) //공격 딜레이를 위한 코루틴
+    private IEnumerator FirstAttack_co(PokemonStats FirstPokemon, PokemonStats otherPokemon, int firstAttack_Num, int otherAttack_Num) //공격 딜레이를 위한 코루틴
     {
         Attack(FirstPokemon, otherPokemon, firstAttack_Num);
         yield return new WaitUntil(() => isAttack == false);
@@ -353,7 +394,7 @@ public class Battle : MonoBehaviour
     public void Be_Attacked(PokemonStats Target) //피격모션 이벤트
     {
         Target.GetComponent<Animator>().SetTrigger("Be_Attacked");
-    }       
+    }
     public void initializeAnimation(PokemonStats Attacker, PokemonStats Target) // 애니메이션 이벤트에 등록
     {
         attackerAnimationEvent = Attacker.GetComponent<PokemonAnimationEvent>();
@@ -406,6 +447,75 @@ public class Battle : MonoBehaviour
     }
     #endregion
     #region Pokemon 관련 메서드
+    public void PokemonUpKey()
+    {
+        if (PokemonUI_Num <= 0)
+        {
+            return;
+        }
+        PokemonUI_Num--;
+        Pokemon_Cursor.transform.position += Move_Pokemon_Cursor;
+        UpdatePokemonUI();
+    }
+    public void PokemonDownKey()
+    {
+        if (PokemonUI_Num >= Temp_Pokemon.Length - 1)
+        {
+            return;
+        }
+        PokemonUI_Num++;
+        Pokemon_Cursor.transform.position -= Move_Pokemon_Cursor;
+        UpdatePokemonUI();
+    }
+    public void PokemonEnterKey()
+    {
+
+    }
+    public void PokemonExitKey()
+    {
+        isPokemon = false;
+        isRobby = true;
+        Pokemon_obj.SetActive(false);
+        Robby_obj.SetActive(true);
+    }
+    public void UpdatePokemonUI()
+    {
+        PokemonUIClear();
+        for (int i = 0; i < Temp_Pokemon.Length; i++) // 6을 플레이어 List의 Count까지로 바꿔줄것 , Temp_pokemon을 PlayerList[i]번째 포켓몬으로 바꿔줄것
+        {
+            Pokemon_Name[i].text = Temp_Pokemon[i].Name;
+            Pokemon_Level[i].text = string.Format($"Lv.{Temp_Pokemon[i].Level}");
+            Pokemon_Hp[i].text = string.Format($"{Temp_Pokemon[i].Hp}/{Temp_Pokemon[i].MaxHp}");
+            Pokemon_Hp_Bar[i].value = (float)Temp_Pokemon[i].Hp / Temp_Pokemon[i].MaxHp;
+            SetColor_Slider(Pokemon_Hp_Bar[i]);
+            Pokemon_Icon[i].sprite = Temp_Pokemon[i].Icon;
+
+            Pokemon_Slot[i].GetComponent<Image>().color = Color.white;
+            Pokemon_Name[i].color = Color.black;
+            Pokemon_Level[i].color = Color.black;
+            Pokemon_Hp[i].color = Color.black;
+        }
+        Pokemon_Slot[PokemonUI_Num].GetComponent<Image>().color = Color.black;
+        Pokemon_Name[PokemonUI_Num].color = Color.white;
+        Pokemon_Level[PokemonUI_Num].color = Color.white;
+        Pokemon_Hp[PokemonUI_Num].color = Color.white;
+        Pokemon_Right_Image.sprite = Temp_Pokemon[PokemonUI_Num].Image;
+        Pokemon_Right_Image.SetNativeSize();
+
+    }
+    public void PokemonUIClear()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            Pokemon_Slot[i].SetActive(false);
+
+        }
+        for (int i = 0; i < Temp_Pokemon.Length; i++) // 6을 플레이어 List의 Count까지로 바꿔줄것
+        {
+            Pokemon_Slot[i].SetActive(true);
+        }
+    }
+
     #endregion
     #region Run 관련 메서드
     public void BattleRun()
@@ -433,6 +543,23 @@ public class Battle : MonoBehaviour
     }
     #endregion
 
+    public void SetColor_Slider(Slider Target)
+    {
+        Image fillImage = Target.transform.Find("Fill Area/Fill").GetComponent<Image>();
+
+        if (Target.value <= 0.25f)
+        {
+            fillImage.GetComponent<Image>().color = RedHp;
+        }
+        if (Target.value > 0.25f && Target.value <= 0.5f)
+        {
+            fillImage.GetComponent<Image>().color = OrangeHp;
+        }
+        if (Target.value > 0.5f && Target.value <= 1f)
+        {
+            fillImage.GetComponent<Image>().color = GreenHp;
+        }
+    } //체력바 색 업데이트
     public void ExitBattle()
     {
         //배틀 종료 

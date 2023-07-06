@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using LitJson;
 
 public class PokemonStats : MonoBehaviour
@@ -30,6 +31,16 @@ public class PokemonStats : MonoBehaviour
     [SerializeField] public Type Type2;
     [SerializeField] public int[] SkillPP;
     [SerializeField] public bool isAlive = true;
+    [SerializeField] public Sprite Icon;
+    [SerializeField] public Sprite Image;
+
+    [SerializeReference] public int defalut_MaxHp;
+    [SerializeReference] public int defalut_Attack;
+    [SerializeReference] public int defalut_Defence;
+    [SerializeReference] public int defalut_SpAttack;
+    [SerializeReference] public int defalut_SpDefence;
+    [SerializeReference] public int defalut_Speed;
+
     public enum Type
     {
         Normal, Fight, Poison, Earth, Flight, Bug, Rock, Ghost, Steel, Fire, Water, Electricty, Grass, Ice, Esper, Dragon, Evil, Fairy, None
@@ -43,20 +54,20 @@ public class PokemonStats : MonoBehaviour
     public float SpeedRank = 0;
     public float HitrateRank = 0;
     //레벨업 랜덤 계수
-    private int LevelUpHp = 0;
-    private int LevelUpAttack = 0;
-    private int LevelUpDefence = 0;
-    private int LevelUpSpAttack = 0;
-    private int LevelUpSpDefence = 0;
-    private int LevelUpSpeed = 0;
-    public void LevelUp()
+    private int LevelUpHp = 2;
+    private int LevelUpAttack = 2;
+    private int LevelUpDefence = 1;
+    private int LevelUpSpAttack = 2;
+    private int LevelUpSpDefence = 1;
+    private int LevelUpSpeed = 1;
+    public void Setting_LevelStats()
     {
-        LevelUpHp += random.Next(1, 3);
-        LevelUpAttack += random.Next(1, 3);
-        LevelUpDefence += random.Next(1, 3);
-        LevelUpSpAttack += random.Next(1, 3);
-        LevelUpSpDefence += random.Next(1, 3);
-        LevelUpSpeed += random.Next(1, 3);
+        MaxHp = defalut_MaxHp + (Level * LevelUpHp);
+        Attack = defalut_Attack + (Level * LevelUpAttack);
+        Defence = defalut_Defence + (Level * LevelUpDefence);
+        SpAttack = defalut_SpAttack + (Level * LevelUpSpAttack);
+        SpDefence = defalut_SpDefence + (Level * LevelUpSpDefence);
+        Speed = defalut_Speed + (Level * LevelUpSpeed);
     }
 
     //스킬들

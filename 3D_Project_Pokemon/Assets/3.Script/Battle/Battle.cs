@@ -14,6 +14,7 @@ public class Battle : MonoBehaviour
     [SerializeField] PokemonStats PlayerPokemon;
     [SerializeField] PokemonStats EnemyPokemon;
     BattleManager BattleManager;
+    [SerializeField] PlayerData playerData;
 
     [Header("UI 오브젝트")]
     [Header("플레이어")]
@@ -99,10 +100,14 @@ public class Battle : MonoBehaviour
     private Color GreenHp = new Color(2f / 255f, 226f / 255f, 0f / 255f);
     private Color OrangeHp = new Color(255f / 255f, 174f / 255f, 45f / 255f);
     private Color RedHp = new Color(255f / 255f, 50f / 255f, 37f / 255f);
+
     private void Awake()
     {
         BattleManager = FindObjectOfType<BattleManager>();
+        playerData = FindObjectOfType<PlayerData>();
         SetSkillTypeColor();
+
+
         FindPokemon();
         PlayerPokemon.Setting_LevelStats();
         EnemyPokemon.Setting_LevelStats();
@@ -112,6 +117,7 @@ public class Battle : MonoBehaviour
         Enemy_Hpbar.value = (float)EnemyPokemon.Hp/EnemyPokemon.MaxHp;
         SetColor_Slider(Player_Hpbar);
         SetColor_Slider(Enemy_Hpbar);
+        Temp_Pokemon = playerData.SettingPokemon();
     }
     private void Update()
     {
@@ -543,6 +549,7 @@ public class Battle : MonoBehaviour
     }
     #endregion
 
+
     public void SetColor_Slider(Slider Target)
     {
         Image fillImage = Target.transform.Find("Fill Area/Fill").GetComponent<Image>();
@@ -581,7 +588,7 @@ public class Battle : MonoBehaviour
         Skill_Type_Color[3] = new Color(236 / 255f, 133 / 255f, 77 / 255f);
         Skill_Type_Color[4] = new Color(158 / 255f, 200 / 255f, 255 / 255f);
         Skill_Type_Color[5] = new Color(172 / 255f, 219 / 255f, 82 / 255f);
-        Skill_Type_Color[6] = new Color(192 / 255f, 178 / 255f, 132 / 137f);
+        Skill_Type_Color[6] = new Color(192 / 255f, 178 / 255f, 137 / 255f);
         Skill_Type_Color[7] = new Color(126 / 255f, 140 / 255f, 204 / 255f);
         Skill_Type_Color[8] = new Color(114 / 255f, 173 / 255f, 195 / 255f);
         Skill_Type_Color[9] = new Color(236 / 255f, 149 / 255f, 79 / 255f);

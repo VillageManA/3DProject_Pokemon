@@ -6,7 +6,6 @@ using LitJson;
 
 public class PokemonStats : MonoBehaviour
 {
-    System.Random random = new System.Random();
     [SerializeField] private int hp;
     public int Hp
     {
@@ -40,7 +39,7 @@ public class PokemonStats : MonoBehaviour
     [SerializeReference] public int defalut_SpAttack;
     [SerializeReference] public int defalut_SpDefence;
     [SerializeReference] public int defalut_Speed;
-
+    private int[] required_Exp;
     public enum Type
     {
         Normal, Fight, Poison, Earth, Flight, Bug, Rock, Ghost, Steel, Fire, Water, Electricty, Grass, Ice, Esper, Dragon, Evil, Fairy, None
@@ -69,7 +68,15 @@ public class PokemonStats : MonoBehaviour
         SpDefence = defalut_SpDefence + (Level * LevelUpSpDefence);
         Speed = defalut_Speed + (Level * LevelUpSpeed);
     }
-
+    public void CheckLevelUp()
+    {
+        while(Exp > required_Exp[Level])
+        {
+            Exp -= required_Exp[Level];
+            Level++;
+            hp += 2;
+        }
+    }
     //½ºÅ³µé
     public List<SkillData> skills = new List<SkillData>();
 
@@ -91,6 +98,11 @@ public class PokemonStats : MonoBehaviour
     {
         TextAsset jsonFile = Resources.Load<TextAsset>(jsonFileName);
         pokemonArray = JsonMapper.ToObject<PokemonData[]>(jsonFile.text);
+        required_Exp= new int[100];
+        for(int i =0; i<100; i++)
+        {
+            required_Exp[i] = 50 * i;
+        }
     }
 
     public PokemonData[] GetPokemonArray()

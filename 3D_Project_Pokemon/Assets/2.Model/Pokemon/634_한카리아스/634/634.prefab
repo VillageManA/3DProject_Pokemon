@@ -416,17 +416,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d132e12b7b5ca04894ce4ea93bb65df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 122
   Name: "\uD55C\uCE74\uB9AC\uC544\uC2A4"
-  MaxHp: 108
-  Attack: 130
-  Defence: 95
-  SpAttack: 80
-  SpDefence: 85
-  Speed: 102
-  Level: 0
+  MaxHp: 122
+  Attack: 144
+  Defence: 102
+  SpAttack: 94
+  SpDefence: 92
+  Speed: 109
+  Level: 7
   Exp: 0
   Type1: 15
   Type2: 3
+  SkillPP: 050000000a0000000a00000005000000
+  isAlive: 1
+  Icon: {fileID: -8614527830621751599, guid: de36b62e9d5c36f46a7d9cf10852aa29, type: 3}
+  Image: {fileID: 21300000, guid: b8de59c5a365a3b42a00a7c08980542f, type: 3}
+  defalut_MaxHp: 108
+  defalut_Attack: 130
+  defalut_Defence: 95
+  defalut_SpAttack: 80
+  defalut_SpDefence: 85
+  defalut_Speed: 102
   AttackRank: 0
   SpAttackRank: 0
   DefenceRank: 0
@@ -450,7 +461,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3efe1d24d63334aaea170fa87fa322, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ani: {fileID: 0}
+  onAttackEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  onDirectAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  onHitEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1225641038361681785
 GameObject:
   m_ObjectHideFlags: 0

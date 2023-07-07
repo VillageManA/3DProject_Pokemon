@@ -31,8 +31,6 @@ public class PlayerControl : MonoBehaviour
         Player_Ani = GetComponent<Animator>();
         playerMoveMent = GetComponent<PlayerMoveMent>();
     }
-
-    List<Inventory> player_Inventory = new List<Inventory>();
     List<PokemonStats> player_Pokemon = new List<PokemonStats>();
 
 

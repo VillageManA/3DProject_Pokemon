@@ -4,32 +4,43 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    List<ItemData> potions = new List<ItemData>();
-    List<ItemData> balls = new List<ItemData>();
+    private Dictionary<ItemData, int> itemDictionary = new Dictionary<ItemData, int>(); // 아이템과 수량을 관리하는 딕셔너리
 
-    public void AddPotion(ItemData potion)
+    public void AddItem(ItemData item, int quantity = 1)
     {
-        potions.Add(potion);
+        if (itemDictionary.ContainsKey(item))
+        {
+            itemDictionary[item] += quantity; // 이미 있는 아이템이면 수량을 증가
+        }
+        else
+        {
+            itemDictionary.Add(item, quantity); // 새로운 아이템이면 딕셔너리에 추가
+        }
     }
-    public void RemovePotion(ItemData potion)
+
+    public void RemoveItem(ItemData item, int quantity = 1)
     {
-        potions.Remove(potion);
+        if (itemDictionary.ContainsKey(item))
+        {
+            itemDictionary[item] -= quantity; // 아이템의 수량을 감소
+
+            if (itemDictionary[item] <= 0)
+            {
+                itemDictionary.Remove(item); // 아이템의 수량이 0 이하면 제거
+            }
+        }
     }
-    public int GetPotionCount()
+
+    public int GetItemCount(ItemData item)
     {
-        return potions.Count;
-    }
-    public void AddBall(ItemData ball)
-    {
-        balls.Add(ball);
-    }
-    public void RemoveBall(ItemData ball)
-    {
-        balls.Remove(ball);
-    }
-    public int GetBallCount()
-    {
-        return balls.Count;
+        if (itemDictionary.ContainsKey(item))
+        {
+            return itemDictionary[item]; // 아이템의 수량을 반환
+        }
+        else
+        {
+            return 0; // 아이템이 없으면 0을 반환
+        }
     }
 
 

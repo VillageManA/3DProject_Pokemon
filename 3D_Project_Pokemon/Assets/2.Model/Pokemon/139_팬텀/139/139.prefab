@@ -539,24 +539,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d132e12b7b5ca04894ce4ea93bb65df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  MaxHp: 0
-  Attack: 0
-  Defence: 0
-  SpAttack: 0
-  SpDefence: 0
-  Speed: 0
-  Level: 0
+  hp: 74
+  Name: "\uD32C\uD140"
+  MaxHp: 74
+  Attack: 79
+  Defence: 67
+  SpAttack: 144
+  SpDefence: 82
+  Speed: 117
+  Level: 7
   Exp: 0
-  Type1: 0
-  Type2: 0
+  Type1: 7
+  Type2: 2
+  SkillPP: 0f0000000f0000000a0000000f000000
+  isAlive: 1
+  Icon: {fileID: -4431250433562163803, guid: de36b62e9d5c36f46a7d9cf10852aa29, type: 3}
+  Image: {fileID: 21300000, guid: 8a67d9e216618c443a548b678827bf17, type: 3}
+  defalut_MaxHp: 60
+  defalut_Attack: 65
+  defalut_Defence: 60
+  defalut_SpAttack: 130
+  defalut_SpDefence: 75
+  defalut_Speed: 110
   AttackRank: 0
   SpAttackRank: 0
   DefenceRank: 0
   SpDefenceRank: 0
   SpeedRank: 0
   HitrateRank: 0
-  skills: []
+  skills:
+  - {fileID: 11400000, guid: 15a1a8c3d43eb1346a72897783b79de0, type: 2}
+  - {fileID: 11400000, guid: db273049ef89eb244b9d8ae09d151836, type: 2}
+  - {fileID: 11400000, guid: b1eb2d76e7e6160449a7fbc57cabd707, type: 2}
+  - {fileID: 11400000, guid: 200a0ee208c5b1545b8d18e7d7aa046c, type: 2}
 --- !u!114 &7631112079997804706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,7 +584,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d3efe1d24d63334aaea170fa87fa322, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ani: {fileID: 0}
+  onAttackEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  onDirectAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  onHitEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1892145824616128079
 GameObject:
   m_ObjectHideFlags: 0

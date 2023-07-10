@@ -17,17 +17,17 @@ public class PlayerControl : MonoBehaviour
     #endregion
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Debug.Log("여기");
-            Destroy(gameObject);
-            return;
-        }
+        //if (instance == null)
+        //{
+        //    instance = this;
+        //    DontDestroyOnLoad(gameObject);
+        //}
+        //else
+        //{
+        //    Debug.Log("여기");
+        //    Destroy(gameObject);
+        //    return;
+        //}
         Player_Ani = GetComponent<Animator>();
         playerMoveMent = GetComponent<PlayerMoveMent>();
     }

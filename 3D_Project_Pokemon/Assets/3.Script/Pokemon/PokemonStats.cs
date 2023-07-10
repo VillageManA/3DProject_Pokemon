@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using LitJson;
 
+[System.Serializable]
 public class PokemonStats : MonoBehaviour
 {
     [SerializeField] private int hp;

@@ -77,6 +77,7 @@ public class Battle : MonoBehaviour
 
     private void Awake()
     {
+<<<<<<< Updated upstream
         BattleManager = FindObjectOfType<BattleManager>();
         SetSkillTypeColor();
         FindPokemon();
@@ -84,6 +85,81 @@ public class Battle : MonoBehaviour
         UpdateSkillUI();
         Player_Hpbar.value = PlayerPokemon.MaxHp;
         Enemy_Hpbar.value = EnemyPokemon.MaxHp;
+=======
+        PlayerControl.Instance.gameObject.SetActive(false);
+        battleManager = FindObjectOfType<BattleManager>();
+        playerData = FindObjectOfType<PlayerData>();
+        SetSkillTypeColor();
+    }
+    private void Update()
+    {
+        if (isRobby)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                RobbyUpKey();
+
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                RobbyDownKey();
+            }
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+            {
+                RobbyEneterKey();
+                return;
+            }
+        } //로비에서 입력
+        if (isFight)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                FightUpKey();
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                FightDownKey();
+            }
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+            {
+                if (PlayerPokemon.skills[Fight_Num].PP == 0)
+                {
+                    Text_Play("PP가 부족하여 스킬을 사용하실 수 없습니다.", 0.4f);
+                    return;
+                }
+                FightEnterKey();
+                return;
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                FightExitKey();
+            }
+        } // 파이트 상태일때 입력
+        if (isItem)
+        {
+
+        } //가방상태일때 입력
+        if (isPokemon)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                PokemonUpKey();
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                PokemonDownKey();
+            }
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+            {
+                PokemonEnterKey();
+                return;
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                PokemonExitKey();
+            }
+        } //포켓몬 교체시 입력
+>>>>>>> Stashed changes
     }
     #region StatsUI 관련 메서드
     public void UpdateStatsUI() // 위아래 플레이어,상대 포켓몬 상태창 UI 업데이트
@@ -249,13 +325,59 @@ public class Battle : MonoBehaviour
     }
     public void Attack(PokemonStats Attacker, PokemonStats Target, int Num)
     {
+<<<<<<< Updated upstream
         //플레이어
         BattleManager.OnDamage(Attacker.skills[Num], Attacker, Target);
         Attacker.GetComponent<Animator>().SetTrigger($"Attack{Num}");
         Be_Attacked(Target);
+=======
+        isFight = false;
+        isAttack = true;
+        PlayerSkill_obj.SetActive(false);
+        initializeAnimation(Attacker, Target);
+        while (Attacker.SkillPP[Num] <= 0) // pp가 0 일시 사용 못하도록
+        {
+            Num = Random.Range(0, 4);
+        }
+        Attacker.SkillPP[Num]--;
+        Attacker.GetComponent<Animator>().SetTrigger($"Attack{Num + 1}");
+        battleManager.OnDamage(Attacker.skills[Num], Attacker, Target);
+        Text_Play(string.Format("{0}의 \n{1}!", Attacker.Name, Attacker.skills[Num].Name), 0.8f); //데미지 문구        
+    }
+>>>>>>> Stashed changes
 
     }
+<<<<<<< Updated upstream
     public void Be_Attacked(PokemonStats Target)
+=======
+    public void FirstEnemyAttack() // 상대방의 선공
+    {
+        StartCoroutine(FirstAttack_co(EnemyPokemon, PlayerPokemon, Enemy_Num, Fight_Num));
+    }
+    private IEnumerator FirstAttack_co(PokemonStats FirstPokemon, PokemonStats otherPokemon, int firstAttack_Num, int otherAttack_Num) //공격 딜레이를 위한 코루틴
+    {
+        Attack(FirstPokemon, otherPokemon, firstAttack_Num);
+        yield return new WaitUntil(() => isAttack == false);
+        yield return new WaitForSeconds(1f);
+        CheckDead();
+        if (!otherPokemon.isAlive)
+        {
+            ExitBattle();
+        }
+        yield return new WaitForSeconds(0.8f);
+        Attack(otherPokemon, FirstPokemon, otherAttack_Num);
+        yield return new WaitUntil(() => isAttack == false);
+        yield return new WaitForSeconds(1f);
+        CheckDead();
+        if (!FirstPokemon.isAlive)
+        {
+            ExitBattle();
+        }
+        yield return new WaitForSeconds(0.8f);
+        EndTurn();
+    }
+    public void Be_Attacked(PokemonStats Target) //피격모션 이벤트
+>>>>>>> Stashed changes
     {
         Target.GetComponent<Animator>().SetTrigger("Be_Attacked");
         UpdateStatsUI();
@@ -280,9 +402,72 @@ public class Battle : MonoBehaviour
         }
     }
     #endregion
+<<<<<<< Updated upstream
 
     public void ExitBattle()
     {
+=======
+    #region 텍스트 관련
+    public void Text_Play(string str, float num)
+    {
+        PlayerUI_obj.SetActive(false);
+        EnemyUI_obj.SetActive(false);
+        Effect_obj.SetActive(true);
+        Effect_Txt.text = string.Format(str);
+        Invoke("Text_Close", num);
+    }
+    public void Text_Close()
+    {
+
+        Effect_obj.SetActive(false);
+    }
+    #endregion
+
+    public void CheckDead()
+    {
+        if (PlayerPokemon.Hp == 0)
+        {
+            PlayerPokemon.isAlive = false;
+        }
+        if (EnemyPokemon.Hp == 0)
+        {
+            EnemyPokemon.isAlive = false;
+        }
+        if (!PlayerPokemon.isAlive)
+        {
+            Text_Play("눈앞이 깜깜해졌다", 0.8f);
+        }
+        if (!EnemyPokemon.isAlive)
+        {
+            Text_Play("경험치를 획득했다!", 0.8f);
+            PlayerPokemon.Exp += 50 * EnemyPokemon.Level;
+            PlayerPokemon.CheckLevelUp();
+        }
+        //Text_Play($"{Target.Name}이/가 쓰러졌다!");
+        //배틀종료
+    }
+    public void SetColor_Slider(Slider Target)
+    {
+        Image fillImage = Target.transform.Find("Fill Area/Fill").GetComponent<Image>();
+
+        if (Target.value <= 0.25f)
+        {
+            fillImage.GetComponent<Image>().color = RedHp;
+        }
+        if (Target.value > 0.25f && Target.value <= 0.5f)
+        {
+            fillImage.GetComponent<Image>().color = OrangeHp;
+        }
+        if (Target.value > 0.5f && Target.value <= 1f)
+        {
+            fillImage.GetComponent<Image>().color = GreenHp;
+        }
+    } //체력바 색 업데이트
+    public void ExitBattle()
+    {
+        SaveManager.instance.SavePlayerPokemonList(playerData.player_Pokemon);
+        SceneManager.LoadSceneAsync("MainField");
+>>>>>>> Stashed changes
         //배틀 종료 
         //데이터 베이스 정리하고 저쪽씬 로드
     }

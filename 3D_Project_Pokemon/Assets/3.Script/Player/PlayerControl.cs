@@ -24,7 +24,10 @@ public class PlayerControl : MonoBehaviour
         }
         else
         {
+<<<<<<< Updated upstream
             Debug.Log("¿©±â");
+=======
+>>>>>>> Stashed changes
             Destroy(gameObject);
             return;
         }

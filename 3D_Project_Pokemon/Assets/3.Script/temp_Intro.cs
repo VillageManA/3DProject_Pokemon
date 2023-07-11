@@ -6,16 +6,9 @@ using UnityEngine.SceneManagement;
 public class temp_Intro : MonoBehaviour
 {
     PlayerData playerdata;
-    private void OnEnable()
+    private void Awake()
     {
         playerdata = FindObjectOfType<PlayerData>();
-        if (playerdata.player_Pokemon_List == null || playerdata.player_Pokemon_List.Length == 0)
-
-        {
-            playerdata.AddPokemon(playerdata.setting_Pokemon[0]);
-            playerdata.AddPokemon(playerdata.setting_Pokemon[1]);
-            playerdata.player_Pokemon_List = playerdata.ListToArray();
-        }   
     }
     private void Update()
     {
@@ -23,6 +16,16 @@ public class temp_Intro : MonoBehaviour
         {
             SaveManager.instance.SavePlayerPokemonList(playerdata.player_Pokemon);
             SceneManager.LoadScene("MainField");
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+
+            if (playerdata.player_Pokemon_List == null || playerdata.player_Pokemon_List.Length == 0)
+            {
+                playerdata.AddPokemon(playerdata.setting_Pokemon[0]);
+                playerdata.AddPokemon(playerdata.setting_Pokemon[1]);
+                playerdata.player_Pokemon_List = playerdata.ListToArray();
+            }
         }
     }
 }

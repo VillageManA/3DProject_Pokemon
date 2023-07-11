@@ -1217,6 +1217,7 @@ Transform:
   m_Children:
   - {fileID: 437630034}
   - {fileID: 157416296}
+  - {fileID: 818993457}
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3873,6 +3874,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 811046285}
   m_CullTransparentMesh: 1
+--- !u!1 &818993456
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 818993457}
+  - component: {fileID: 818993458}
+  m_Layer: 0
+  m_Name: PlayerData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &818993457
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818993456}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 162117054}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &818993458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818993456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0433ee6ef88d90749a49e9e51df369b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player_Pokemon: []
+  player_Pokemon_List: []
+  setting_Pokemon: []
 --- !u!1001 &851028802
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13484,24 +13531,3 @@ MonoBehaviour:
   onBallEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &919132148011848815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132148011848812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0433ee6ef88d90749a49e9e51df369b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player_Pokemon: []
-  player_Pokemon_List: []
-  setting_Pokemon:
-  - {fileID: -1266783662790544940, guid: 9847b7f5051d9804b81934d2df956f0f, type: 3}
-  - {fileID: -5709856812107486884, guid: e852a2a37354e774b905e3b6118c999a, type: 3}
-  - {fileID: -4539370323588915461, guid: b4c5d60cda8cac14f89742b845b3f57f, type: 3}
-  - {fileID: -5980267312060653806, guid: 64bf913d3c65d1946804967e77c6ebd1, type: 3}
-  - {fileID: -5337180003436682290, guid: 30a4611b7571108498b9279cf34195d8, type: 3}
-  - {fileID: -3303259682961675459, guid: 1a86eb9e595b33946a3932539e20d442, type: 3}

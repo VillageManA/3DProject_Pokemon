@@ -21,9 +21,6 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    string jsonFileName_Player = "DataBase/PlayerData.json";
-    string jsonFileName_Pokemon = "DataBase/PokemonData.json";
-
     public void SaveInventory(Dictionary<ItemData, int> inventoryData)
     {
         // 딕셔너리를 JSON 문자열로 변환
@@ -75,8 +72,13 @@ public class SaveManager : MonoBehaviour
             pokemonData.Speed = pokemon.Speed;
             pokemonData.Type1 = (int)pokemon.Type1;
             pokemonData.Type2 = (int)pokemon.Type2;
+            pokemonData.Exp = pokemon.Exp;
+            pokemonData.Level = pokemon.Level;
+            pokemonData.Skill1 = pokemon.SkillPP[0];
+            pokemonData.Skill2 = pokemon.SkillPP[1];
+            pokemonData.Skill3 = pokemon.SkillPP[2];
+            pokemonData.Skill4 = pokemon.SkillPP[3];
             // 나머지 속성 복사    
-
             pokemonDataList.Add(pokemonData);
         }
         // 포켓몬 데이터 리스트를 JSON 문자열로 변환
@@ -90,6 +92,9 @@ public class SaveManager : MonoBehaviour
         }
         Debug.Log(filePath);
         File.WriteAllText(filePath, json);
+
+
+
     }
 
     public List<PokemonStats> LoadPlayerPokemonList()
@@ -120,12 +125,23 @@ public class SaveManager : MonoBehaviour
                 pokemon.Speed = pokemonData.Speed;
                 pokemon.Type1 = (PokemonStats.Type)pokemonData.Type1;
                 pokemon.Type2 = (PokemonStats.Type)pokemonData.Type2;
+                pokemon.Exp = pokemonData.Exp;
+                pokemon.Level = pokemonData.Level;
+                pokemon.SkillPP[0] = pokemonData.Skill1;
+                pokemon.SkillPP[1] = pokemonData.Skill2;
+                pokemon.SkillPP[2] = pokemonData.Skill3;
+                pokemon.SkillPP[3] = pokemonData.Skill4;
+                //pokemon.obj = pokemonData.obj;
                 // 나머지 속성 복사
+
+
 
                 pokemonList.Add(pokemon);
             }
         }
         return pokemonList;
     }
+
+
 
 }

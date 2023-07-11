@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -728,22 +728,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bd4dc839d2f23d24cbc5fd35fca62fef, type: 3}
   m_PrefabInstance: {fileID: 628953416}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &628953418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 628953417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0433ee6ef88d90749a49e9e51df369b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player_Pokemon: []
-  player_Pokemon_List: []
-  setting_Pokemon:
-  - {fileID: -5337180003436682290, guid: 30a4611b7571108498b9279cf34195d8, type: 3}
 --- !u!114 &628953419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,6 +813,7 @@ GameObject:
   - component: {fileID: 1122444219}
   - component: {fileID: 1122444218}
   - component: {fileID: 1122444220}
+  - component: {fileID: 1122444221}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -874,6 +859,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037763c3852288640a9c2c627f7316a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1122444221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122444217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0433ee6ef88d90749a49e9e51df369b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player_Pokemon: []
+  player_Pokemon_List: []
+  setting_Pokemon: []
 --- !u!1 &1910645961
 GameObject:
   m_ObjectHideFlags: 0

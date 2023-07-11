@@ -105,7 +105,7 @@ public class Battle : MonoBehaviour
 
     private void Awake()
     {
-        
+        PlayerControl.Instance.gameObject.SetActive(false);
         battleManager = FindObjectOfType<BattleManager>();
         playerData = FindObjectOfType<PlayerData>();
         SetSkillTypeColor();
@@ -376,7 +376,7 @@ public class Battle : MonoBehaviour
         Attacker.SkillPP[Num]--;
         Attacker.GetComponent<Animator>().SetTrigger($"Attack{Num + 1}");
         battleManager.OnDamage(Attacker.skills[Num], Attacker, Target);
-        Text_Play(string.Format("{0}의 \n{1}!", Attacker.Name, Attacker.skills[Num].Name) , 0.8f); //데미지 문구        
+        Text_Play(string.Format("{0}의 \n{1}!", Attacker.Name, Attacker.skills[Num].Name), 0.8f); //데미지 문구        
     }
 
     public void FirstPlayerAttack() //플레이어의 선공
@@ -394,20 +394,22 @@ public class Battle : MonoBehaviour
         yield return new WaitUntil(() => isAttack == false);
         yield return new WaitForSeconds(1f);
         CheckDead();
-        if(!otherPokemon.isAlive)
+        if (!otherPokemon.isAlive)
         {
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(0.8f);
             ExitBattle();
         }
+        yield return new WaitForSeconds(0.2f);
         Attack(otherPokemon, FirstPokemon, otherAttack_Num);
         yield return new WaitUntil(() => isAttack == false);
         yield return new WaitForSeconds(1f);
         CheckDead();
-        if(!FirstPokemon.isAlive)
+        if (!FirstPokemon.isAlive)
         {
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(0.8f);
             ExitBattle();
         }
+        yield return new WaitForSeconds(0.2f);
         EndTurn();
     }
     public void Be_Attacked(PokemonStats Target) //피격모션 이벤트
@@ -558,8 +560,9 @@ public class Battle : MonoBehaviour
     }
     #endregion
     #region 텍스트 관련
-    public void Text_Play(string str ,float num)
+    public void Text_Play(string str, float num)
     {
+
         PlayerUI_obj.SetActive(false);
         EnemyUI_obj.SetActive(false);
         Effect_obj.SetActive(true);
@@ -579,17 +582,17 @@ public class Battle : MonoBehaviour
         {
             PlayerPokemon.isAlive = false;
         }
-        if(EnemyPokemon.Hp ==0)
+        if (EnemyPokemon.Hp == 0)
         {
             EnemyPokemon.isAlive = false;
         }
         if (!PlayerPokemon.isAlive)
         {
-            Text_Play("눈앞이 깜깜해졌다" , 0.8f);
+            Text_Play("눈앞이 깜깜해졌다", 0.8f);
         }
-        if(!EnemyPokemon.isAlive)
+        if (!EnemyPokemon.isAlive)
         {
-            Text_Play("경험치를 획득했다!" , 0.8f);
+            Text_Play("경험치를 획득했다!", 0.8f);
             PlayerPokemon.Exp += 50 * EnemyPokemon.Level;
             PlayerPokemon.CheckLevelUp();
         }
@@ -616,7 +619,7 @@ public class Battle : MonoBehaviour
     public void ExitBattle()
     {
         SaveManager.instance.SavePlayerPokemonList(playerData.player_Pokemon);
-        SceneManager.LoadScene("MainField");
+        SceneManager.LoadSceneAsync("MainField");
         //배틀 종료 
         //데이터 베이스 정리하고 저쪽씬 로드
     }

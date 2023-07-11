@@ -7,13 +7,14 @@ public class temp : MonoBehaviour
 {
     PlayerData player;
 
-    private void OnEnable()
+    private void Start()
     {
         player = FindObjectOfType<PlayerData>();
+        PlayerControl.Instance.gameObject.SetActive(true);
         //player.player_Pokemon = SaveManager.instance.LoadPlayerPokemonList();
-        Debug.Log(player.player_Pokemon[1].Name);
-        //player.player_Pokemon_List = player.ListToArray();
-        Debug.Log(player.player_Pokemon_List[1].Name);
+        //Debug.Log(player.player_Pokemon[1].Name);
+        ////player.player_Pokemon_List = player.ListToArray();
+        //Debug.Log(player.player_Pokemon_List[1].Name);
     }
     private void Update()
     {

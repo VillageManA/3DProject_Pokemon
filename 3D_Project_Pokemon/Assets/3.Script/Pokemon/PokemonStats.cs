@@ -29,7 +29,7 @@ public class PokemonStats : MonoBehaviour
     [SerializeField] public int Exp;
     [SerializeField] public Type Type1;
     [SerializeField] public Type Type2;
-    [SerializeField] public int[] SkillPP;
+    [SerializeField] public int[] SkillPP = new int[4];
     [SerializeField] public bool isAlive = true;
     [SerializeField] public Sprite Icon;
     [SerializeField] public Sprite Image;
@@ -117,6 +117,8 @@ public class PokemonData
     public int Num;
     public int MaxHp;
     public int Hp;
+    public int Exp;
+    public int Level;
     public int Attack;
     public int Defence;
     public int SpAttack;
@@ -128,5 +130,6 @@ public class PokemonData
     public int Skill2;
     public int Skill3;
     public int Skill4;
+    public bool isAlive;
 }
 

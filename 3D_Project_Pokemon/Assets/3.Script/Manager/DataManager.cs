@@ -30,19 +30,21 @@ public class DataManager : MonoBehaviour
         {
             pokemon[i].GetComponent<PokemonStats>().Name = pokemonData[i].Name;
             pokemon[i].GetComponent<PokemonStats>().defalut_MaxHp = pokemonData[i].MaxHp;
+            pokemon[i].GetComponent<PokemonStats>().Hp = pokemonData[i].Hp;
             pokemon[i].GetComponent<PokemonStats>().defalut_Attack = pokemonData[i].Attack;
             pokemon[i].GetComponent<PokemonStats>().defalut_Defence = pokemonData[i].Defence;
             pokemon[i].GetComponent<PokemonStats>().defalut_SpAttack = pokemonData[i].SpAttack;
             pokemon[i].GetComponent<PokemonStats>().defalut_SpDefence = pokemonData[i].SpDefence;
             pokemon[i].GetComponent<PokemonStats>().defalut_Speed = pokemonData[i].Speed;
-            pokemon[i].GetComponent<PokemonStats>().Level = 7;
+            pokemon[i].GetComponent<PokemonStats>().Level = pokemonData[i].Level;
+            pokemon[i].GetComponent<PokemonStats>().Exp = pokemonData[i].Exp;
             pokemon[i].GetComponent<PokemonStats>().Type1 = (PokemonStats.Type)pokemonData[i].Type1;
             pokemon[i].GetComponent<PokemonStats>().Type2 = (PokemonStats.Type)pokemonData[i].Type2;
             pokemon[i].GetComponent<PokemonStats>().Icon = Pokemon_Icon[i];
             pokemon[i].GetComponent<PokemonStats>().Image = Pokemon_Image[i];
+            pokemon[i].GetComponent<PokemonStats>().isAlive = pokemonData[i].isAlive;
 
             pokemon[i].GetComponent<PokemonStats>().Setting_LevelStats();
-            pokemon[i].GetComponent<PokemonStats>().Hp = pokemon[i].GetComponent<PokemonStats>().MaxHp;
             pokemon[i].GetComponent<PokemonStats>().ClearSkill();
             pokemon[i].GetComponent<PokemonStats>().AddSkill(PokemonSkill[pokemonData[i].Skill1]);
             pokemon[i].GetComponent<PokemonStats>().AddSkill(PokemonSkill[pokemonData[i].Skill2]);

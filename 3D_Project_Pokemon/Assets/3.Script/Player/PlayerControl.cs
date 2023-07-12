@@ -24,14 +24,12 @@ public class PlayerControl : MonoBehaviour
         }
         else
         {
-            Debug.Log("¿©±â");
             Destroy(gameObject);
             return;
         }
         Player_Ani = GetComponent<Animator>();
         playerMoveMent = GetComponent<PlayerMoveMent>();
     }
-    List<PokemonStats> player_Pokemon = new List<PokemonStats>();
 
 
 

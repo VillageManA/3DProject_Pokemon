@@ -36,8 +36,6 @@ public class DataManager : MonoBehaviour
             pokemon[i].GetComponent<PokemonStats>().defalut_SpAttack = pokemonData[i].SpAttack;
             pokemon[i].GetComponent<PokemonStats>().defalut_SpDefence = pokemonData[i].SpDefence;
             pokemon[i].GetComponent<PokemonStats>().defalut_Speed = pokemonData[i].Speed;
-            pokemon[i].GetComponent<PokemonStats>().Level = pokemonData[i].Level;
-            pokemon[i].GetComponent<PokemonStats>().Exp = pokemonData[i].Exp;
             pokemon[i].GetComponent<PokemonStats>().Type1 = (PokemonStats.Type)pokemonData[i].Type1;
             pokemon[i].GetComponent<PokemonStats>().Type2 = (PokemonStats.Type)pokemonData[i].Type2;
             pokemon[i].GetComponent<PokemonStats>().Icon = Pokemon_Icon[i];

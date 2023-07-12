@@ -90,7 +90,6 @@ public class SaveManager : MonoBehaviour
         {
             File.Create(filePath).Dispose();
         }
-        Debug.Log(filePath);
         File.WriteAllText(filePath, json);
 
 

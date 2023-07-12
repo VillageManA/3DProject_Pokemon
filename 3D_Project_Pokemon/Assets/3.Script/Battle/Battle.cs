@@ -10,12 +10,15 @@ public class Battle : MonoBehaviour
     public bool isFight;
     public bool isItem;
     public bool isPokemon;
+    public bool isOption;
+    public bool isInfo;
     public bool isAttack;
 
     [SerializeField] PokemonStats PlayerPokemon;
     [SerializeField] PokemonStats EnemyPokemon;
     BattleManager battleManager;
     [SerializeField] PlayerData playerData;
+    [SerializeField] Animator player_Ani;
 
     [Header("UI 오브젝트")]
     [Header("플레이어")]
@@ -57,8 +60,32 @@ public class Battle : MonoBehaviour
     [SerializeField] Slider[] Pokemon_Hp_Bar;
     [SerializeField] Image[] Pokemon_Icon;
 
-    [Header("임시용 포켓몬배열")]
-    [SerializeField] PokemonStats[] Temp_Pokemon;
+    [Header("옵션 관련")]
+    [SerializeField] GameObject option_obj;
+    [SerializeField] GameObject option_Selected_Zone;
+    [SerializeField] GameObject option_Cursor;
+    [SerializeField] Text[] option_Text;
+
+    [Header("상태창 관련")]
+    [SerializeField] GameObject Info_obj;
+    [SerializeField] GameObject[] info_Pokemon_Status;
+    [SerializeField] Text Info_Name;
+    [SerializeField] Text Info_Level;
+
+    [Header("상태창 스텟")]
+    [SerializeField] Text Info_Hp;
+    [SerializeField] Text Info_Attack;
+    [SerializeField] Text Info_Defence;
+    [SerializeField] Text Info_SpAttack;
+    [SerializeField] Text Info_SpDefence;
+    [SerializeField] Text Info_Speed;
+    
+    [Header("상태창 스킬")]
+    [SerializeField] Text[] Info_Skill_Name;
+    [SerializeField] Text[] Info_PP;
+    [SerializeField] Image[] Info_Skill_Type;
+    [SerializeField] Sprite[] skill_Type_Icon;
+
 
     [Header("효과 문구")]
     [SerializeField] GameObject Effect_obj;
@@ -103,6 +130,20 @@ public class Battle : MonoBehaviour
     private Color OrangeHp = new Color(255f / 255f, 174f / 255f, 45f / 255f);
     private Color RedHp = new Color(255f / 255f, 50f / 255f, 37f / 255f);
 
+    //옵션 관련 변수
+    public int option_Num;
+    private int maxOption_Num = 3;
+    private Vector3 defalut_option_obj = new Vector3(900, 840, 0);
+    private Vector3 move_option_obj = new Vector3(0, 140, 0);
+    private Vector3 defalut_Selected_Zone = new Vector3(-50,55,0);
+    private Vector3 defalut_Option_Cursor = new Vector3(-60,0,0);
+    private Vector3 move_Option_Cursor = new Vector3(0, 50, 0);
+
+    //캐싱용
+    private WaitForSeconds zero_Eight_Seconds = new WaitForSeconds(0.8f);
+    private WaitForSeconds One_Seconds = new WaitForSeconds(1f);
+
+
     private void Awake()
     {
         PlayerControl.Instance.gameObject.SetActive(false);
@@ -141,6 +182,10 @@ public class Battle : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
             {
+                if (PlayerPokemon.SkillPP[Fight_Num] <= 0)
+                {
+                    return;
+                }
                 FightEnterKey();
                 return;
             }
@@ -152,7 +197,7 @@ public class Battle : MonoBehaviour
         if (isItem)
         {
 
-        } //가방상태일때 입력
+        } //가방칸에서 입력
         if (isPokemon)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -166,13 +211,62 @@ public class Battle : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
             {
                 PokemonEnterKey();
+                UpdateOptionUI();
                 return;
             }
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 PokemonExitKey();
             }
-        } //포켓몬 교체시 입력
+        } //포켓몬칸에서 입력
+        if (isOption)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                OptionUpKey();
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                OptionDownKey();
+            }
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+            {
+                OptionEnterKey();
+                return;
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                OptionExitKey();
+            }
+        } //포켓몬 옵션창에서 입력
+        if (isInfo)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                InfoUpKey();
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                InfoDownKey();
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                InfoLeftKey();
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                InfoRightKey();
+            }
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+            {
+                InfoEnterKey();
+                return;
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                InfoExitKey();
+            }
+        }//포켓몬 상태창에서 입력
     }
     #region StatsUI 관련 메서드
     public void UpdateStatsUI() // 위아래 플레이어,상대 포켓몬 상태창 UI 업데이트
@@ -365,14 +459,15 @@ public class Battle : MonoBehaviour
     }
     public void Attack(PokemonStats Attacker, PokemonStats Target, int Num)
     {
+        while (Attacker.SkillPP[Num] <= 0) // pp가 0 일시 사용 못하도록
+        {
+            Num = Random.Range(0, 4);
+            return;
+        }
         isFight = false;
         isAttack = true;
         PlayerSkill_obj.SetActive(false);
         initializeAnimation(Attacker, Target);
-        if (Attacker.SkillPP[Num] <= 0) // pp가 0 일시 사용 못하도록
-        {
-            return;
-        }
         Attacker.SkillPP[Num]--;
         Attacker.GetComponent<Animator>().SetTrigger($"Attack{Num + 1}");
         battleManager.OnDamage(Attacker.skills[Num], Attacker, Target);
@@ -396,7 +491,7 @@ public class Battle : MonoBehaviour
         CheckDead();
         if (!otherPokemon.isAlive)
         {
-            yield return new WaitForSeconds(0.8f);
+            yield return zero_Eight_Seconds;
             ExitBattle();
         }
         yield return new WaitForSeconds(0.2f);
@@ -406,7 +501,7 @@ public class Battle : MonoBehaviour
         CheckDead();
         if (!FirstPokemon.isAlive)
         {
-            yield return new WaitForSeconds(0.8f);
+            yield return zero_Eight_Seconds;
             ExitBattle();
         }
         yield return new WaitForSeconds(0.2f);
@@ -501,7 +596,9 @@ public class Battle : MonoBehaviour
     }
     public void PokemonEnterKey()
     {
-
+        isPokemon = false;
+        isOption = true;
+        option_obj.SetActive(true);
     }
     public void PokemonExitKey()
     {
@@ -548,6 +645,103 @@ public class Battle : MonoBehaviour
         }
     }
 
+    #endregion
+    #region Option 관련 메서드
+    public void OptionUpKey()
+    {
+        if (option_Num <= 0)
+        {
+            return;
+        }
+        option_Num--;
+        option_Selected_Zone.transform.position += move_Option_Cursor;
+        
+        UpdateOptionUI();
+    }
+    public void OptionDownKey()
+    {
+        if (option_Num >= maxOption_Num-1)
+        {
+            return;
+        }
+        option_Num++;
+        option_Selected_Zone.transform.position -= move_Option_Cursor;
+        UpdateOptionUI();
+    } 
+    public void OptionEnterKey()
+    {
+        switch(option_Num)
+        {
+            case 0:
+                {
+                    //포켓몬 교체
+                    StartCoroutine(ChangePokemon_co());
+                }
+                break;
+            case 1:
+                {
+                    Info_obj.SetActive(true);
+                    isOption = false;
+                    isInfo = true;
+                    
+                    //포켓몬 상태창 확인으로 넘어가기
+                }
+                break;
+            case 2:
+                {
+                    OptionExitKey();
+                }
+                break;
+        }
+    }
+    public void OptionExitKey()
+    {
+        option_Selected_Zone.transform.localPosition = defalut_Selected_Zone;
+        option_Num = 0;
+        UpdateOptionUI();
+        isOption = false;
+        isPokemon = true;
+        option_obj.SetActive(false);
+    }
+    public void UpdateOptionUI()
+    {
+        option_obj.transform.position = defalut_option_obj;
+        for(int i=0; i<PokemonUI_Num; i++)
+        {
+            option_obj.transform.position -= move_option_obj;
+        }
+        for (int i = 0; i < maxOption_Num; i++)
+        {
+            option_Text[i].color = Color.black;
+        }
+        option_Text[option_Num].color = Color.white;
+    }
+    #endregion
+    #region Info 관련 메서드
+    public void InfoUpKey()
+    {
+
+    }
+    public void InfoDownKey()
+    {
+
+    }
+    public void InfoLeftKey()
+    {
+
+    }
+    public void InfoRightKey()
+    {
+
+    }
+    public void InfoEnterKey()
+    {
+
+    }
+    public void InfoExitKey()
+    {
+
+    }
     #endregion
     #region Run 관련 메서드
     public void BattleRun()
@@ -630,6 +824,23 @@ public class Battle : MonoBehaviour
         GameObject Player = GameObject.FindGameObjectWithTag("PlayerPokemon");
         PlayerPokemon = Player.GetComponent<PokemonStats>();
     }
+    public IEnumerator ChangePokemon_co()
+    {
+        option_obj.SetActive(false);
+        Pokemon_obj.SetActive(false);
+        isOption = false;
+        isRobby = true;
+        PlayerPokemon.transform.position = new Vector3(999, 999, 999);
+        PlayerPokemon.transform.tag = "None";
+        yield return null;
+        Text_Play($"돌아와 {PlayerPokemon.Name}",0.8f);
+        yield return zero_Eight_Seconds;
+
+        selected_Pokemon = PokemonUI_Num;
+        Text_Play($"가라 {playerData.player_Pokemon[selected_Pokemon].Name}!",0.4f);
+        player_Ani.SetTrigger("Start");
+
+    }
     public void StartBattle()
     {
         PlayerUI_obj.SetActive(true);
@@ -638,10 +849,10 @@ public class Battle : MonoBehaviour
         FindPokemon();
         PlayerPokemon.Setting_LevelStats();
         EnemyPokemon.Setting_LevelStats();
-        UpdateStatsUI();
-        UpdateSkillUI();
         Player_Hpbar.value = (float)PlayerPokemon.Hp / PlayerPokemon.MaxHp;
         Enemy_Hpbar.value = (float)EnemyPokemon.Hp / EnemyPokemon.MaxHp;
+        UpdateStatsUI();
+        UpdateSkillUI();
         SetColor_Slider(Player_Hpbar);
         SetColor_Slider(Enemy_Hpbar);
     } //배틀 시작될때

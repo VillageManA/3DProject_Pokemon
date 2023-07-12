@@ -9,8 +9,8 @@ public class temp : MonoBehaviour
 
     private void Start()
     {
-        player = FindObjectOfType<PlayerData>();
         PlayerControl.Instance.gameObject.SetActive(true);
+        player = FindObjectOfType<PlayerData>();
         //player.player_Pokemon = SaveManager.instance.LoadPlayerPokemonList();
         //Debug.Log(player.player_Pokemon[1].Name);
         ////player.player_Pokemon_List = player.ListToArray();

@@ -32,6 +32,7 @@ public class BallControl : MonoBehaviour
     }
     private IEnumerator Start_co()
     {
+        battleCam.SwitchCamera(0);
         balls[0].transform.position = start_Ball_Positon.transform.position;
         balls[0].transform.LookAt(player_Zone);
         Rigidbody ballRigidbody = balls[0].GetComponent<Rigidbody>();

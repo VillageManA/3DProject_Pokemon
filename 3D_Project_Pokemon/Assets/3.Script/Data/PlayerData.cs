@@ -88,7 +88,7 @@ public class PlayerData : MonoBehaviour
 
     public void setInitialization()
     {
-        for (int i = 0; i < player_Pokemon_List.Length / 2; i++)
+        for (int i = 0; i < player_Pokemon_List.Length; i++)
         {
             player_Pokemon[i + player_Pokemon_List.Length].Level = player_Pokemon[i].Level;
             player_Pokemon[i + player_Pokemon_List.Length].MaxHp = player_Pokemon[i].MaxHp;
@@ -104,6 +104,7 @@ public class PlayerData : MonoBehaviour
             player_Pokemon[i + player_Pokemon_List.Length].SkillPP[2] = player_Pokemon[i].SkillPP[2];
             player_Pokemon[i + player_Pokemon_List.Length].SkillPP[3] = player_Pokemon[i].SkillPP[3];
             player_Pokemon[i + player_Pokemon_List.Length].isAlive = player_Pokemon[i].isAlive;
+            player_Pokemon[i].Setting_LevelStats();
         }
         for (int i = 0; i < player_Pokemon_List.Length; i++)
         {

@@ -69,8 +69,10 @@ public class Battle : MonoBehaviour
     [Header("상태창 관련")]
     [SerializeField] GameObject Info_obj;
     [SerializeField] GameObject[] info_Pokemon_Status;
+    [SerializeField] Image[] info_TopMenu_Icon;
     [SerializeField] Text Info_Name;
     [SerializeField] Text Info_Level;
+    [SerializeField] Image info_Right_Image;
 
     [Header("상태창 스텟")]
     [SerializeField] Text Info_Hp;
@@ -79,10 +81,10 @@ public class Battle : MonoBehaviour
     [SerializeField] Text Info_SpAttack;
     [SerializeField] Text Info_SpDefence;
     [SerializeField] Text Info_Speed;
-    
+
     [Header("상태창 스킬")]
     [SerializeField] Text[] Info_Skill_Name;
-    [SerializeField] Text[] Info_PP;
+    [SerializeField] Text[] Info_Skill_PP;
     [SerializeField] Image[] Info_Skill_Type;
     [SerializeField] Sprite[] skill_Type_Icon;
 
@@ -135,14 +137,20 @@ public class Battle : MonoBehaviour
     private int maxOption_Num = 3;
     private Vector3 defalut_option_obj = new Vector3(900, 840, 0);
     private Vector3 move_option_obj = new Vector3(0, 140, 0);
-    private Vector3 defalut_Selected_Zone = new Vector3(-50,55,0);
-    private Vector3 defalut_Option_Cursor = new Vector3(-60,0,0);
+    private Vector3 defalut_Selected_Zone = new Vector3(-50, 55, 0);
+    private Vector3 defalut_Option_Cursor = new Vector3(-60, 0, 0);
     private Vector3 move_Option_Cursor = new Vector3(0, 50, 0);
+
+    //인포 관련 변수
+    public int info_TopMenu_Num;
+    private int max_Info_TopMenu_Num = 2;
+    private int info_Selected_Num;
+    private int max_Info_Selected_Num = 2;
 
     //캐싱용
     private WaitForSeconds zero_Eight_Seconds = new WaitForSeconds(0.8f);
+    private WaitForSeconds zero_Two_Seconds = new WaitForSeconds(0.2f);
     private WaitForSeconds One_Seconds = new WaitForSeconds(1f);
-
 
     private void Awake()
     {
@@ -376,9 +384,7 @@ public class Battle : MonoBehaviour
             case 3:
                 {
                     isRobby = false;
-                    ExitBattle();
-                    //확률로 배틀 런
-                    Debug.Log("도망갔당");
+                    BattleRun();
                 }
                 break;
         }
@@ -487,24 +493,24 @@ public class Battle : MonoBehaviour
     {
         Attack(FirstPokemon, otherPokemon, firstAttack_Num);
         yield return new WaitUntil(() => isAttack == false);
-        yield return new WaitForSeconds(1f);
+        yield return One_Seconds;
         CheckDead();
         if (!otherPokemon.isAlive)
         {
             yield return zero_Eight_Seconds;
             ExitBattle();
         }
-        yield return new WaitForSeconds(0.2f);
+        yield return zero_Two_Seconds;
         Attack(otherPokemon, FirstPokemon, otherAttack_Num);
         yield return new WaitUntil(() => isAttack == false);
-        yield return new WaitForSeconds(1f);
+        yield return One_Seconds;
         CheckDead();
         if (!FirstPokemon.isAlive)
         {
             yield return zero_Eight_Seconds;
             ExitBattle();
         }
-        yield return new WaitForSeconds(0.2f);
+        yield return zero_Two_Seconds;
         EndTurn();
     }
     public void Be_Attacked(PokemonStats Target) //피격모션 이벤트
@@ -655,22 +661,22 @@ public class Battle : MonoBehaviour
         }
         option_Num--;
         option_Selected_Zone.transform.position += move_Option_Cursor;
-        
+
         UpdateOptionUI();
     }
     public void OptionDownKey()
     {
-        if (option_Num >= maxOption_Num-1)
+        if (option_Num >= maxOption_Num - 1)
         {
             return;
         }
         option_Num++;
         option_Selected_Zone.transform.position -= move_Option_Cursor;
         UpdateOptionUI();
-    } 
+    }
     public void OptionEnterKey()
     {
-        switch(option_Num)
+        switch (option_Num)
         {
             case 0:
                 {
@@ -680,10 +686,12 @@ public class Battle : MonoBehaviour
                 break;
             case 1:
                 {
+                    info_Selected_Num = PokemonUI_Num;
+                    UpdateInfoUI();
+                    option_obj.SetActive(false);
                     Info_obj.SetActive(true);
                     isOption = false;
                     isInfo = true;
-                    
                     //포켓몬 상태창 확인으로 넘어가기
                 }
                 break;
@@ -706,7 +714,7 @@ public class Battle : MonoBehaviour
     public void UpdateOptionUI()
     {
         option_obj.transform.position = defalut_option_obj;
-        for(int i=0; i<PokemonUI_Num; i++)
+        for (int i = 0; i < PokemonUI_Num; i++)
         {
             option_obj.transform.position -= move_option_obj;
         }
@@ -720,19 +728,39 @@ public class Battle : MonoBehaviour
     #region Info 관련 메서드
     public void InfoUpKey()
     {
-
+        if (info_Selected_Num <= 0)
+        {
+            return;
+        }
+        info_Selected_Num--;
+        UpdateInfoUI();
     }
     public void InfoDownKey()
     {
-
+        if (info_Selected_Num >= max_Info_Selected_Num - 1)
+        {
+            return;
+        }
+        info_Selected_Num++;
+        UpdateInfoUI();
     }
     public void InfoLeftKey()
     {
-
+        if (info_TopMenu_Num <= 0)
+        {
+            return;
+        }
+        info_TopMenu_Num--;
+        UpdateInfoUI();
     }
     public void InfoRightKey()
     {
-
+        if (info_TopMenu_Num >= max_Info_TopMenu_Num - 1)
+        {
+            return;
+        }
+        info_TopMenu_Num++;
+        UpdateInfoUI();
     }
     public void InfoEnterKey()
     {
@@ -740,6 +768,43 @@ public class Battle : MonoBehaviour
     }
     public void InfoExitKey()
     {
+        isInfo = false;
+        isPokemon = true;
+        Info_obj.SetActive(false);
+        info_TopMenu_Num = 0;
+        info_Selected_Num = 0;
+    }
+    public void UpdateInfoUI()
+    {
+        Info_Name.text = string.Format($"{playerData.player_Pokemon[info_Selected_Num].Name}");
+        Info_Level.text = string.Format($"Lv.{playerData.player_Pokemon[info_Selected_Num].Level}");
+
+        Info_Hp.text = string.Format($"HP\n{playerData.player_Pokemon[info_Selected_Num].Hp} / {playerData.player_Pokemon[info_Selected_Num].MaxHp}");
+        Info_Attack.text = string.Format($"공격\n{playerData.player_Pokemon[info_Selected_Num].Attack}");
+        Info_SpAttack.text = string.Format($"특수공격\n{playerData.player_Pokemon[info_Selected_Num].SpAttack}");
+        Info_Defence.text = string.Format($"{playerData.player_Pokemon[info_Selected_Num].Defence}\n방어");
+        Info_SpDefence.text = string.Format($"{playerData.player_Pokemon[info_Selected_Num].SpDefence}\n특수방어");
+        Info_Speed.text = string.Format($"{playerData.player_Pokemon[info_Selected_Num].Speed}\n스피드");
+
+        for (int i = 0; i < playerData.player_Pokemon[info_Selected_Num].skills.Count; i++)
+        {
+            Info_Skill_Name[i].text = string.Format($"{playerData.player_Pokemon[info_Selected_Num].skills[i].Name}");
+            Info_Skill_Type[i].sprite = skill_Type_Icon[(int)playerData.player_Pokemon[info_Selected_Num].skills[i].propertyType];
+            Info_Skill_PP[i].text = string.Format($"{playerData.player_Pokemon[info_Selected_Num].SkillPP[i]}/{playerData.player_Pokemon[info_Selected_Num].skills[i].MaxPP}");
+        }
+
+        info_Right_Image.sprite = playerData.player_Pokemon[info_Selected_Num].Image;
+        info_Right_Image.SetNativeSize();
+
+        for (int i = 0; i < info_TopMenu_Icon.Length; i++)
+        {
+            info_TopMenu_Icon[i].color = Color.white;
+            info_Pokemon_Status[i].SetActive(false);
+        }
+        info_Pokemon_Status[info_TopMenu_Num].SetActive(true);
+        info_TopMenu_Icon[info_TopMenu_Num].color = Color.black;
+
+
 
     }
     #endregion
@@ -749,7 +814,13 @@ public class Battle : MonoBehaviour
         int ran = Random.Range(0, 100);
         if (ran < 95)
         {
+            ExitBattle();
             //배틀종료
+        }
+        else
+        {
+            ExitBattle();
+            //일단 임시 추후에 적턴 할예정
         }
     }
     #endregion
@@ -833,11 +904,11 @@ public class Battle : MonoBehaviour
         PlayerPokemon.transform.position = new Vector3(999, 999, 999);
         PlayerPokemon.transform.tag = "None";
         yield return null;
-        Text_Play($"돌아와 {PlayerPokemon.Name}",0.8f);
+        Text_Play($"돌아와 {PlayerPokemon.Name}", 0.8f);
         yield return zero_Eight_Seconds;
 
         selected_Pokemon = PokemonUI_Num;
-        Text_Play($"가라 {playerData.player_Pokemon[selected_Pokemon].Name}!",0.4f);
+        Text_Play($"가라 {playerData.player_Pokemon[selected_Pokemon].Name}!", 0.4f);
         player_Ani.SetTrigger("Start");
 
     }

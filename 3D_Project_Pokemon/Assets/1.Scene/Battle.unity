@@ -7254,8 +7254,12 @@ MonoBehaviour:
   info_Pokemon_Status:
   - {fileID: 1589869788}
   - {fileID: 1803354894}
+  info_TopMenu_Icon:
+  - {fileID: 48749685}
+  - {fileID: 1489675810}
   Info_Name: {fileID: 1979639712}
   Info_Level: {fileID: 1206488329}
+  info_Right_Image: {fileID: 502554167}
   Info_Hp: {fileID: 44019433}
   Info_Attack: {fileID: 577316304}
   Info_Defence: {fileID: 814024878}
@@ -7267,7 +7271,7 @@ MonoBehaviour:
   - {fileID: 1121860976}
   - {fileID: 1599339917}
   - {fileID: 780002933}
-  Info_PP:
+  Info_Skill_PP:
   - {fileID: 1333229404}
   - {fileID: 406725409}
   - {fileID: 678413422}
@@ -7305,6 +7309,7 @@ MonoBehaviour:
   PokemonUI_Num: 0
   selected_Pokemon: 0
   option_Num: 0
+  info_TopMenu_Num: 0
 --- !u!114 &1149348958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10319,7 +10324,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1589869789
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12176,7 +12181,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1803354895
 RectTransform:
   m_ObjectHideFlags: 0

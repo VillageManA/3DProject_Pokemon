@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class PlayerMoveMent : MonoBehaviour
 {
-    Vector3 Direction = Vector3.zero;
-    [SerializeField] private float walkSpeed = 5f;
-    [SerializeField] private float runSpeed = 10f;
-    public void MoveTo(Vector3 direction , float speed)
+    [SerializeField] public float walkSpeed = 5f;
+    [SerializeField] public float runSpeed = 10f;
+    private float rotationSpeed = 5f;
+
+    public void MoveTo(Vector3 direction, float speed)
     {
-        gameObject.transform.position += direction * speed * Time.deltaTime;
+        if (direction.magnitude > 0)
+        {
+            Vector3 moveDirection = direction.normalized * speed * Time.deltaTime;
+            transform.position += moveDirection;
+        }
     }
-    
+    public void RotateCharacter(float rotationInput)
+    {
+        transform.Rotate(Vector3.up * rotationInput * rotationSpeed * Time.deltaTime);
+    }
 }

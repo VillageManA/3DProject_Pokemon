@@ -6,85 +6,93 @@ using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
-    private StateManager stateManager;
+    public float speed;
+    public float runspeed;
+    public float jumpSpeed;
+    public float gravity;
+    public float rotationSpeed;
 
+    private CharacterController controller;
+    private Vector3 moveDirection;
+    private Transform cameraTransform;
+
+    private StateManager stateManager;
+    private PlayerControl playerControl;
 
     private void Start()
     {
+        speed = 3.0f;
+        runspeed = 2;
+        jumpSpeed = 8.0f;
+        gravity = 20.0f;
+        rotationSpeed = 1.0f;
+
+        controller = GetComponent<CharacterController>();
+        moveDirection = Vector3.zero;
+
+        cameraTransform = Camera.main.transform;
+
         stateManager = FindObjectOfType<StateManager>();
+        playerControl = GetComponent<PlayerControl>();
     }
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        if (controller.isGrounded)
         {
-            if (Input.GetKey(KeyCode.W))
-            {
-                stateManager.ChangeState(State.Run);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(transform.forward, 10f);
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
 
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
+            moveDirection = new Vector3(horizontalInput, 0f, verticalInput);
+            moveDirection = cameraTransform.TransformDirection(moveDirection);
+            moveDirection.y = 0f;
+            moveDirection.Normalize();
 
-                transform.Rotate(Vector3.up * -90f * Time.deltaTime);
-                stateManager.ChangeState(State.Run);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(-transform.right, 3f);
+            float currentSpeed = speed;
+            if (Input.GetKey(KeyCode.LeftShift))
+                currentSpeed *= runspeed;
 
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                stateManager.ChangeState(State.Run);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(-transform.forward, 10f);
+            moveDirection *= currentSpeed;
 
-            }
-            else if (Input.GetKey(KeyCode.D))
+            if (Input.GetButton("Jump"))
+                moveDirection.y = jumpSpeed;
+
+            if (verticalInput >= 0f)
             {
-                transform.Rotate(Vector3.up * 90f * Time.deltaTime);
-                stateManager.ChangeState(State.Run);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(transform.right, 3f);
+                RotatePlayer(moveDirection);
             }
+        }
+
+        moveDirection.y -= gravity * Time.deltaTime;
+
+        controller.Move(moveDirection * Time.deltaTime);
+
+        UpdateState();
+        
+    }
+
+    private void RotatePlayer(Vector3 moveDirection)
+    {
+        if (moveDirection != Vector3.zero)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(moveDirection);
+            transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+        }
+    }
+
+    private void UpdateState()
+    {
+
+        if (moveDirection.magnitude > 0.4f)
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+                stateManager.ChangeState(State.Run);
             else
-            {
-                stateManager.ChangeState(State.Idle);
-            }
+                stateManager.ChangeState(State.Move);
         }
         else
         {
-            if (Input.GetKey(KeyCode.W))
-            {
-                stateManager.ChangeState(State.Move);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(transform.forward, 5f);
-
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-
-                transform.Rotate(Vector3.up * -90f * Time.deltaTime);
-                stateManager.ChangeState(State.Move);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(-transform.right, 3f);
-
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                stateManager.ChangeState(State.Move);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(-transform.forward, 5f);
-
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                transform.Rotate(Vector3.up * 90 * Time.deltaTime);
-                stateManager.ChangeState(State.Move);
-                PlayerControl.Instance.GetComponent<PlayerMoveMent>().MoveTo(transform.right, 3f);
-
-
-            }
-            else
-            {
-                stateManager.ChangeState(State.Idle);
-            }
+            stateManager.ChangeState(State.Idle);
         }
-        stateManager.UpdateState();
-
     }
 }

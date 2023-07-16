@@ -15,7 +15,6 @@ public class PlayerData : MonoBehaviour
     {
         player_Pokemon = SaveManager.instance.LoadPlayerPokemonList();
         player_Pokemon_List = ListToArray();
-        //player_Pokemon.Clear();
 
 
 
@@ -52,18 +51,6 @@ public class PlayerData : MonoBehaviour
         player_Pokemon.Remove(Target);
     }
 
-
-    public PokemonStats[] SettingPokemon()
-    {
-        player_Pokemon.Clear();
-        for (int i = 0; i < 6; i++)
-        {
-            AddPokemon(setting_Pokemon[i]);
-        }
-        PokemonStats[] pokemon = player_Pokemon.ToArray();
-        return pokemon;
-
-    }
     public PokemonStats[] ListToArray()
     {
         PokemonStats[] pokemon = player_Pokemon.ToArray();

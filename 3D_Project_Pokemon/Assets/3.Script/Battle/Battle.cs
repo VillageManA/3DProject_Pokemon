@@ -122,7 +122,6 @@ public class Battle : MonoBehaviour
 
     //포켓몬 관련 변수
     public int PokemonUI_Num;
-    private int Max_PokemonUI_Num = 6;
     public int selected_Pokemon = 0;
     private Vector3 Default_Pokemon_Cursor;
     private Vector3 Move_Pokemon_Cursor = new Vector3(0, 140, 0);
@@ -885,12 +884,11 @@ public class Battle : MonoBehaviour
     {
         SaveManager.instance.SavePlayerPokemonList(playerData.player_Pokemon);
         SceneManager.LoadSceneAsync("MainField");
-        //배틀 종료 
-        //데이터 베이스 정리하고 저쪽씬 로드
+
     }
     public void FindPokemon()
     {
-        GameObject Enemy = GameObject.FindGameObjectWithTag("Pokemon");
+        GameObject Enemy = GameObject.FindGameObjectWithTag("EnemyPokemon");
         EnemyPokemon = Enemy.GetComponent<PokemonStats>();
         GameObject Player = GameObject.FindGameObjectWithTag("PlayerPokemon");
         PlayerPokemon = Player.GetComponent<PokemonStats>();

@@ -4,23 +4,29 @@ using UnityEngine;
 
 public class PokemonCenterNPC : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    PlayerData playerdata;
+    [SerializeField] MainFieldText mainFieldText;
+    private void Awake()
+    {
+        playerdata = FindObjectOfType<PlayerData>();
+    }
+
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Alpha1))
             {
-                for (int i = 0; i < other.GetComponent<PlayerData>().player_Pokemon.Count; i++)
+                for (int i = 0; i < playerdata.player_Pokemon.Count; i++)
                 {
-
-                    other.GetComponent<PlayerData>().player_Pokemon[i].Hp = other.GetComponent<PlayerData>().player_Pokemon[i].MaxHp; //체력회복
-
+                    playerdata.player_Pokemon[i].Hp = playerdata.player_Pokemon[i].MaxHp; //체력회복
                     for (int j = 0; j < 4; j++) //pp회복
                     {
-                        other.GetComponent<PlayerData>().player_Pokemon[i].SkillPP[j] = other.GetComponent<PlayerData>().player_Pokemon[i].skills[j].MaxPP;
+                        playerdata.player_Pokemon[i].SkillPP[j] = playerdata.player_Pokemon[i].skills[j].MaxPP;
 
                     }
                 }
+                mainFieldText.TextPlay("회복되었단다.");
             }
         }
     }

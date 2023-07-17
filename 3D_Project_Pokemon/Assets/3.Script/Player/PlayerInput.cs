@@ -14,12 +14,12 @@ public class PlayerInput : MonoBehaviour
 
     private CharacterController controller;
     private Vector3 moveDirection;
-    private Transform cameraTransform;
+    [SerializeField] private Transform cameraTransform;
 
     private StateManager stateManager;
-    private PlayerControl playerControl;
 
-    private void Start()
+
+    private void Awake()
     {
         speed = 3.0f;
         runspeed = 2;
@@ -30,10 +30,17 @@ public class PlayerInput : MonoBehaviour
         controller = GetComponent<CharacterController>();
         moveDirection = Vector3.zero;
 
-        cameraTransform = Camera.main.transform;
 
         stateManager = FindObjectOfType<StateManager>();
-        playerControl = GetComponent<PlayerControl>();
+
+    }
+    private void Start()
+    {
+        if (cameraTransform == null)
+        {
+            GameObject mainCamera = Camera.main.gameObject;
+            cameraTransform = mainCamera.transform;
+        }
     }
 
     private void Update()
@@ -42,6 +49,12 @@ public class PlayerInput : MonoBehaviour
         {
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
+
+            if (cameraTransform == null)
+            {
+                GameObject mainCamera = Camera.main.gameObject;
+                cameraTransform = mainCamera.transform;
+            }
 
             moveDirection = new Vector3(horizontalInput, 0f, verticalInput);
             moveDirection = cameraTransform.TransformDirection(moveDirection);
@@ -68,7 +81,7 @@ public class PlayerInput : MonoBehaviour
         controller.Move(moveDirection * Time.deltaTime);
 
         UpdateState();
-        
+
     }
 
     private void RotatePlayer(Vector3 moveDirection)

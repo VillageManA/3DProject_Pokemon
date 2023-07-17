@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public bool isPlay;
     public bool isBattle;
+    public bool EndBattle;
+    public bool isTalk;
 
 
     private static GameManager instance = null;

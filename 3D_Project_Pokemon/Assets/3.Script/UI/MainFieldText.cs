@@ -6,24 +6,46 @@ using UnityEngine.UI;
 public class MainFieldText : MonoBehaviour
 {
     [SerializeField] Text Main_Text;
+    [SerializeField] GameObject main_obj;
+    private bool isWaitingForInput = false;
+
+    private void OnEnable()
+    {
+        if (PlayerControl.Instance != null)
+        {
+            if (!PlayerControl.Instance.gameObject.activeSelf)
+            {
+                PlayerControl.Instance.gameObject.SetActive(true);
+            }
+        }
+    }
 
     public IEnumerator Text_Play(string str)
     {
-        Main_Text.gameObject.SetActive(true);
+        main_obj.SetActive(true);
         Main_Text.text = str;
+        isWaitingForInput = true;
 
-        while (!Input.GetKeyDown(KeyCode.Space)) // 스페이스키 입력 대기
+        yield return new WaitForSeconds(0.1f);
+
+        while (isWaitingForInput) // 스페이스키 입력 대기
         {
             yield return null;
         }
 
-        Main_Text.gameObject.SetActive(false);
-
-
+        main_obj.SetActive(false);
     }
 
-    public void StartTextCoroutine(string str)
+    public void TextPlay(string str)
     {
         StartCoroutine(Text_Play(str));
+    }
+
+    private void Update()
+    {
+        if (isWaitingForInput && Input.GetKeyDown(KeyCode.Return))
+        {
+            isWaitingForInput = false;
+        }
     }
 }

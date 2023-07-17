@@ -10,6 +10,7 @@ public class PokemonCenter : MonoBehaviour
     private void Awake()
     {
         playerdata = FindObjectOfType<PlayerData>();
+        PlayerControl.Instance.gameObject.SetActive(true);
     }
     private void OnTriggerEnter(Collider other)
     {

@@ -22,6 +22,9 @@ public class MainFieldText : MonoBehaviour
 
     public IEnumerator Text_Play(string str)
     {
+        PlayerControl.Instance.GetComponent<PlayerInput>().enabled = false;
+        PlayerControl.Instance.GetComponent<Animator>().SetBool("Run",false);
+        PlayerControl.Instance.GetComponent<Animator>().SetBool("Move",false);
         main_obj.SetActive(true);
         Main_Text.text = str;
         isWaitingForInput = true;
@@ -33,6 +36,7 @@ public class MainFieldText : MonoBehaviour
             yield return null;
         }
 
+        PlayerControl.Instance.GetComponent<PlayerInput>().enabled = true;
         main_obj.SetActive(false);
     }
 

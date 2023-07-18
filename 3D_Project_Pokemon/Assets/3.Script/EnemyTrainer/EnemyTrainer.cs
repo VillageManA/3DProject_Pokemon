@@ -30,6 +30,8 @@ public class EnemyTrainer : MonoBehaviour
     private IEnumerator Confirm_Player_co(Collider other)
     {
         other.GetComponent<PlayerInput>().enabled = false;
+        other.GetComponent<Animator>().SetBool("Run", false);
+        other.GetComponent<Animator>().SetBool("Move", false);
         //exclamation_Mark.SetActive(true);
         //exclamation_Mark.transform.position = gameObject.transform.position + Vector3.up * 2f;
         //exclamation_Mark.transform.LookAt(other.gameObject.transform);
@@ -44,11 +46,11 @@ public class EnemyTrainer : MonoBehaviour
             yield return null;
         }
 
-        yield return StartCoroutine(mainFieldText.Text_Play("거기 너"));
+        yield return StartCoroutine(mainFieldText.Text_Play("포켓몬 세계에선 마주치면 \n배틀을 하는게 섭리야!"));
         yield return new WaitForSeconds(0.2f);
         GameManager.Instance.EndBattle = true;
         SaveManager.instance.SavePlayerPokemonList(playerdata.player_Pokemon);
-
+        EnemyData.Instance.SelectedEnemyPokemon = EnemyPokemonList;
         other.GetComponent<PlayerInput>().enabled = true;
         SceneManager.LoadSceneAsync("Battle");
     }

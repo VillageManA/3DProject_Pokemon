@@ -7166,10 +7166,13 @@ MonoBehaviour:
   playerData: {fileID: 0}
   player_Ani: {fileID: 919132148011848813}
   PlayerUI_obj: {fileID: 1240644041}
+  player_Zone: {fileID: 1592564447}
   Player_Name: {fileID: 921995855}
   Player_Level: {fileID: 1843978594}
   Player_Hp: {fileID: 1832249400}
   Player_Hpbar: {fileID: 716855746}
+  enemyPokemonList: []
+  enemy_Zone: {fileID: 1067825919}
   EnemyUI_obj: {fileID: 1367470167}
   Enemy_Name: {fileID: 1408427885}
   Enemy_Level: {fileID: 1668525597}
@@ -7337,7 +7340,10 @@ MonoBehaviour:
   Fight_Num: 0
   Item_Num: 0
   PokemonUI_Num: 0
+  Pokemon_Alive_Num: 0
+  Enemy_Alive_Num: 0
   selected_Pokemon: 0
+  enemy_Selected_Pokemon: 0
   option_Num: 0
   info_TopMenu_Num: 0
 --- !u!114 &1149348958
@@ -8929,7 +8935,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2151096290395655014, guid: c00742f0b7607d841a0d7a9f349a2d35, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2151096290395655014, guid: c00742f0b7607d841a0d7a9f349a2d35, type: 3}
       propertyPath: m_TagString

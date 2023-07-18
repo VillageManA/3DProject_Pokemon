@@ -23,12 +23,16 @@ public class Battle : MonoBehaviour
     [Header("UI 오브젝트")]
     [Header("플레이어")]
     [SerializeField] GameObject PlayerUI_obj;
+    [SerializeField] GameObject player_Zone;
     [SerializeField] Text Player_Name;
     [SerializeField] Text Player_Level;
     [SerializeField] Text Player_Hp;
     [SerializeField] Slider Player_Hpbar;
 
     [Header("Enemy")]
+
+    [SerializeField] PokemonStats[] enemyPokemonList;
+    [SerializeField] Transform enemy_Zone;
     [SerializeField] GameObject EnemyUI_obj;
     [SerializeField] Text Enemy_Name;
     [SerializeField] Text Enemy_Level;
@@ -122,7 +126,10 @@ public class Battle : MonoBehaviour
 
     //포켓몬 관련 변수
     public int PokemonUI_Num;
+    public int Pokemon_Alive_Num;
+    public int Enemy_Alive_Num;
     public int selected_Pokemon = 0;
+    public int enemy_Selected_Pokemon = 0;
     private Vector3 Default_Pokemon_Cursor;
     private Vector3 Move_Pokemon_Cursor = new Vector3(0, 140, 0);
 
@@ -150,12 +157,15 @@ public class Battle : MonoBehaviour
     private WaitForSeconds zero_Eight_Seconds = new WaitForSeconds(0.8f);
     private WaitForSeconds zero_Two_Seconds = new WaitForSeconds(0.2f);
     private WaitForSeconds One_Seconds = new WaitForSeconds(1f);
-
     private void Awake()
     {
         PlayerControl.Instance.gameObject.SetActive(false);
         battleManager = FindObjectOfType<BattleManager>();
         playerData = FindObjectOfType<PlayerData>();
+        Pokemon_Alive_Num = playerData.player_Pokemon.Count;
+        enemyPokemonList = EnemyData.Instance.SelectedEnemyPokemon;
+        Enemy_Alive_Num = enemyPokemonList.Length;
+        SummonEnemy(enemy_Selected_Pokemon);
         SetSkillTypeColor();
     }
     private void Update()
@@ -288,13 +298,12 @@ public class Battle : MonoBehaviour
         Player_Name.text = PlayerPokemon.Name;
         Player_Level.text = string.Format("Lv.{0}", PlayerPokemon.Level);
         Player_Hp.text = string.Format("{0} / {1}", PlayerPokemon.Hp, PlayerPokemon.MaxHp);
-        //Player_Hpbar.value = PlayerPokemon.Hp / PlayerPokemon.MaxHp;
     }
     public void UpdateEnemyStatsUI() // 상대 포켓몬 상태창 UI 업데이트
     {
         Enemy_Name.text = EnemyPokemon.Name;
         Enemy_Level.text = string.Format("Lv.{0}", EnemyPokemon.Level);
-        //Enemy_Hpbar.value = EnemyPokemon.Hp / EnemyPokemon.MaxHp;
+
     }
     public void UpdateHpBar(PokemonStats Target, Slider Target_Slider) //자연스럽게 Hpbar를 내리기위한 메서드
     {
@@ -494,23 +503,19 @@ public class Battle : MonoBehaviour
         yield return new WaitUntil(() => isAttack == false);
         yield return One_Seconds;
         CheckDead();
-        if (!otherPokemon.isAlive)
-        {
-            yield return zero_Eight_Seconds;
-            ExitBattle();
-        }
         yield return zero_Two_Seconds;
-        Attack(otherPokemon, FirstPokemon, otherAttack_Num);
-        yield return new WaitUntil(() => isAttack == false);
-        yield return One_Seconds;
-        CheckDead();
-        if (!FirstPokemon.isAlive)
+        if (otherPokemon.isAlive)
         {
-            yield return zero_Eight_Seconds;
-            ExitBattle();
+            Attack(otherPokemon, FirstPokemon, otherAttack_Num);
+            yield return new WaitUntil(() => isAttack == false);
+            yield return One_Seconds;
+            CheckDead();
+            yield return zero_Two_Seconds;
         }
-        yield return zero_Two_Seconds;
-        EndTurn();
+        else
+        {
+            EndTurn();
+        }
     }
     public void Be_Attacked(PokemonStats Target) //피격모션 이벤트
     {
@@ -561,6 +566,7 @@ public class Battle : MonoBehaviour
     }
     public void EndTurn() // 둘다 공격이 끝나고 턴종료시
     {
+        EndAttack();
         PlayerSkill_Cursor.transform.localPosition = Default_Fight_Cursor;
         Robby_Cursor.transform.localPosition = Default_Robby_Cursor;
         Fight_Num = 0;
@@ -576,6 +582,12 @@ public class Battle : MonoBehaviour
         playerData.player_Pokemon_List[selected_Pokemon].SkillPP[1] = PlayerPokemon.SkillPP[1];
         playerData.player_Pokemon_List[selected_Pokemon].SkillPP[2] = PlayerPokemon.SkillPP[2];
         playerData.player_Pokemon_List[selected_Pokemon].SkillPP[3] = PlayerPokemon.SkillPP[3];
+
+        enemyPokemonList[enemy_Selected_Pokemon].Hp = EnemyPokemon.Hp;
+        enemyPokemonList[enemy_Selected_Pokemon].SkillPP[0] = EnemyPokemon.SkillPP[0];
+        enemyPokemonList[enemy_Selected_Pokemon].SkillPP[1] = EnemyPokemon.SkillPP[1];
+        enemyPokemonList[enemy_Selected_Pokemon].SkillPP[2] = EnemyPokemon.SkillPP[2];
+        enemyPokemonList[enemy_Selected_Pokemon].SkillPP[3] = EnemyPokemon.SkillPP[3];
     }
     #endregion
     #region Pokemon 관련 메서드
@@ -840,25 +852,64 @@ public class Battle : MonoBehaviour
     }
     #endregion
 
+
+    public void SummonEnemy(int num)
+    {
+        GameObject obj = Instantiate(enemyPokemonList[num].gameObject, enemy_Zone.transform.position, Quaternion.identity);
+        obj.transform.LookAt(player_Zone.transform.position);
+        obj.transform.tag = "EnemyPokemon";
+    }
+    public void ChangeEnemyPokemon()
+    {
+        EnemyPokemon.transform.position = new Vector3(-999, -999, -999);
+        EnemyPokemon.transform.tag = "None";
+        enemy_Selected_Pokemon++;
+        SummonEnemy(enemy_Selected_Pokemon);
+        if (PlayerPokemon != null)
+        {
+            Invoke("Enemy_Change_Setting", 0.8f);
+        }
+    }
     public void CheckDead()
     {
         if (PlayerPokemon.Hp == 0)
         {
             PlayerPokemon.isAlive = false;
+            playerData.player_Pokemon[selected_Pokemon].isAlive = false;
+            Pokemon_Alive_Num--;
         }
         if (EnemyPokemon.Hp == 0)
         {
             EnemyPokemon.isAlive = false;
+            enemyPokemonList[enemy_Selected_Pokemon].isAlive = false;
+            Enemy_Alive_Num--;
         }
         if (!PlayerPokemon.isAlive)
         {
-            Text_Play("눈앞이 깜깜해졌다", 0.8f);
+            if (Pokemon_Alive_Num > 0)
+            {
+                //포켓몬 ui 열어서 교체 가능하게 해주세용
+            }
+            else
+            {
+                Text_Play("눈앞이 깜깜해졌다", 0.8f);
+                ExitBattle();
+            }
+
         }
         if (!EnemyPokemon.isAlive)
         {
             Text_Play("경험치를 획득했다!", 0.8f);
             PlayerPokemon.Exp += 50 * EnemyPokemon.Level;
             PlayerPokemon.CheckLevelUp();
+            if (Enemy_Alive_Num > 0)
+            {
+                Invoke("ChangeEnemyPokemon", 0.9f);
+            }
+            else
+            {
+                ExitBattle();
+            }
         }
         //Text_Play($"{Target.Name}이/가 쓰러졌다!");
         //배틀종료
@@ -925,6 +976,14 @@ public class Battle : MonoBehaviour
         SetColor_Slider(Player_Hpbar);
         SetColor_Slider(Enemy_Hpbar);
     } //배틀 시작될때
+
+    public void Enemy_Change_Setting()
+    {
+        FindPokemon();
+        EnemyPokemon.Setting_LevelStats();
+        Enemy_Hpbar.value = (float)EnemyPokemon.Hp / EnemyPokemon.MaxHp;
+        UpdateStatsUI();
+    }
     public void SetSkillTypeColor()
     {
         //스킬타입에 따른 컬러

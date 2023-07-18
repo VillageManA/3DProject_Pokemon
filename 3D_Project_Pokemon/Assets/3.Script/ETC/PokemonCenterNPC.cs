@@ -15,7 +15,7 @@ public class PokemonCenterNPC : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 for (int i = 0; i < playerdata.player_Pokemon.Count; i++)
                 {
@@ -27,6 +27,7 @@ public class PokemonCenterNPC : MonoBehaviour
                     }
                 }
                 mainFieldText.TextPlay("회복되었단다.");
+                return;
             }
         }
     }

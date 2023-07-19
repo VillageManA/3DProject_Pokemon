@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public bool isPlay;
+    public bool isField;
+    public bool isOpenUI;
     public bool isBattle;
-    public bool EndBattle;
+    public bool[] EndBattle;
     public bool isTalk;
 
 
@@ -27,5 +28,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        EndBattle = new bool[10];
     }
+    
 }

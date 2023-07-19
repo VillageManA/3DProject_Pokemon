@@ -24,7 +24,6 @@ public class DataManager : MonoBehaviour
             int index = skillData.Num;
             PokemonSkill[index] = skillData;
         }
-        Debug.Log(pokemon.Length);
 
         for (int i = 0; i < pokemon.Length; i++)
         {

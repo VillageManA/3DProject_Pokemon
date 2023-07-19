@@ -511,10 +511,13 @@ public class Battle : MonoBehaviour
             yield return One_Seconds;
             CheckDead();
             yield return zero_Two_Seconds;
+            EndTurn();
         }
         else
         {
-            EndTurn();
+            PlayerUI_obj.SetActive(false);
+            EnemyUI_obj.SetActive(false);
+            Invoke("EndTurn", 0.8f);
         }
     }
     public void Be_Attacked(PokemonStats Target) //피격모션 이벤트
@@ -867,7 +870,7 @@ public class Battle : MonoBehaviour
         SummonEnemy(enemy_Selected_Pokemon);
         if (PlayerPokemon != null)
         {
-            Invoke("Enemy_Change_Setting", 0.8f);
+            Invoke("Enemy_Change_Setting", 0.1f);
         }
     }
     public void CheckDead()
@@ -904,7 +907,7 @@ public class Battle : MonoBehaviour
             PlayerPokemon.CheckLevelUp();
             if (Enemy_Alive_Num > 0)
             {
-                Invoke("ChangeEnemyPokemon", 0.9f);
+                Invoke("ChangeEnemyPokemon", 0.81f);
             }
             else
             {

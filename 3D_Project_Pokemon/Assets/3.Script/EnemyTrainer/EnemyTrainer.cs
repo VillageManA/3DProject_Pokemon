@@ -8,7 +8,8 @@ public class EnemyTrainer : MonoBehaviour
 {
     [SerializeField] PokemonStats[] EnemyPokemonList;
     PlayerData playerdata;
-    GameObject exclamation_Mark;
+    Animator Enemy_ani;
+    [SerializeField] GameObject exclamation_Mark;
     MainFieldText mainFieldText;
     [SerializeField] int EnemyTrainerNum;
     [SerializeField] int[] pokemonLevel;
@@ -18,13 +19,7 @@ public class EnemyTrainer : MonoBehaviour
     {
         playerdata = FindObjectOfType<PlayerData>();
         mainFieldText = FindObjectOfType<MainFieldText>();
-        for(int i=0; i<EnemyPokemonList.Length; i++)
-        {
-            EnemyPokemonList[i].Level = pokemonLevel[i];
-            EnemyPokemonList[i].Setting_LevelStats();
-
-        }
-
+        Enemy_ani = GetComponent<Animator>();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -48,13 +43,13 @@ public class EnemyTrainer : MonoBehaviour
         {
             playerinput.enabled = false;
         }
-        //exclamation_Mark.SetActive(true);
-        //exclamation_Mark.transform.position = gameObject.transform.position + Vector3.up * 2f;
-        //exclamation_Mark.transform.LookAt(other.gameObject.transform);
-        Debug.Log("´À³¦Ç¥¶¹´Ù");
-        yield return new WaitForSeconds(0.2f);
-        Debug.Log("´À³¦Ç¥²¨Á³´Ù");
-        //exclamation_Mark.SetActive(false);
+        exclamation_Mark.SetActive(true);
+        exclamation_Mark.transform.position = gameObject.transform.position + Vector3.up * 2f;
+        exclamation_Mark.transform.LookAt(other.gameObject.transform);
+        exclamation_Mark.transform.Rotate(60,0,0);
+        yield return new WaitForSeconds(0.75f);
+        exclamation_Mark.SetActive(false);
+        Enemy_ani.SetBool("Move", true);
 
         while (Vector3.Distance(gameObject.transform.position, other.gameObject.transform.position) > 0.5)
         {
@@ -62,17 +57,19 @@ public class EnemyTrainer : MonoBehaviour
             yield return null;
         }
 
+        Enemy_ani.SetBool("Move", false);
         yield return StartCoroutine(mainFieldText.Text_Play(enemyTrainer_Text1,enemyTrainer_Text2));
         yield return new WaitForSeconds(0.2f);
         GameManager.Instance.EndBattle[EnemyTrainerNum] = true;
         SaveManager.instance.SavePlayerPokemonList(playerdata.player_Pokemon);
 
         //Ä³½Ì
-        EnemyData enemyData = EnemyData.Instance;
-        enemyData.SelectedEnemyPokemon = EnemyPokemonList;
-        for (int i=0; i< enemyData.SelectedEnemyPokemon.Length; i++)
+        EnemyData.Instance.SelectedEnemyPokemon = EnemyPokemonList;
+        for (int i=0; i< EnemyData.Instance.SelectedEnemyPokemon.Length; i++)
         {
-            enemyData.SelectedEnemyPokemon[i].Hp = enemyData.SelectedEnemyPokemon[i].MaxHp;
+            EnemyData.Instance.SelectedEnemyPokemon[i].Level = pokemonLevel[i];
+            EnemyData.Instance.SelectedEnemyPokemon[i].Setting_LevelStats();
+            EnemyData.Instance.SelectedEnemyPokemon[i].Hp = EnemyData.Instance.SelectedEnemyPokemon[i].MaxHp;
         }
         playerinput.enabled = true;
         SceneManager.LoadSceneAsync("Battle");

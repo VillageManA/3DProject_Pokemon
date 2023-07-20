@@ -19,6 +19,7 @@ public class Battle : MonoBehaviour
     BattleManager battleManager;
     [SerializeField] PlayerData playerData;
     [SerializeField] Animator player_Ani;
+    LoadingSceneManager LoadingScene;
 
     [Header("UI 오브젝트")]
     [Header("플레이어")]
@@ -160,16 +161,19 @@ public class Battle : MonoBehaviour
     private void Awake()
     {
         PlayerControl.Instance.gameObject.SetActive(false);
+        LoadingScene = FindObjectOfType<LoadingSceneManager>();
         battleManager = FindObjectOfType<BattleManager>();
         playerData = FindObjectOfType<PlayerData>();
-        Pokemon_Alive_Num = playerData.player_Pokemon.Count;
         enemyPokemonList = EnemyData.Instance.SelectedEnemyPokemon;
         Enemy_Alive_Num = enemyPokemonList.Length;
+
         SummonEnemy(enemy_Selected_Pokemon);
         SetSkillTypeColor();
     }
     private void Update()
     {
+        Debug.Log(Pokemon_Alive_Num);
+
         if (isRobby)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -384,9 +388,9 @@ public class Battle : MonoBehaviour
                 break;
             case 2:
                 {
-                    isRobby = false;
-                    isItem = true;
-                    Debug.Log("아이템 교체칸");
+                    //isRobby = false;
+                    //isItem = true;
+                    Debug.Log("아이템 교체칸은 미구현이에용");
                 }
                 break;
             case 3:
@@ -574,8 +578,11 @@ public class Battle : MonoBehaviour
         Robby_Cursor.transform.localPosition = Default_Robby_Cursor;
         Fight_Num = 0;
         Robby_Num = 0;
+        if(PlayerPokemon.isAlive)
+        {
         isRobby = true;
         Robby_obj.SetActive(true);
+        }    
         Update_PokemonData();
     }
     public void Update_PokemonData()
@@ -695,6 +702,10 @@ public class Battle : MonoBehaviour
             case 0:
                 {
                     //포켓몬 교체
+                    if (!playerData.player_Pokemon[PokemonUI_Num].isAlive || selected_Pokemon == PokemonUI_Num)
+                    {
+                        return;
+                    }
                     StartCoroutine(ChangePokemon_co());
                 }
                 break;
@@ -879,7 +890,7 @@ public class Battle : MonoBehaviour
         {
             PlayerPokemon.isAlive = false;
             playerData.player_Pokemon[selected_Pokemon].isAlive = false;
-            Pokemon_Alive_Num--;
+            CheckAlive();
         }
         if (EnemyPokemon.Hp == 0)
         {
@@ -889,8 +900,14 @@ public class Battle : MonoBehaviour
         }
         if (!PlayerPokemon.isAlive)
         {
-            if (Pokemon_Alive_Num > 0)
+            if (Pokemon_Alive_Num >0)
             {
+                isRobby = false;
+                isPokemon = true;
+                Robby_obj.SetActive(false);
+                Pokemon_obj.SetActive(true);
+                UpdatePokemonUI();
+                return;
                 //포켓몬 ui 열어서 교체 가능하게 해주세용
             }
             else
@@ -917,6 +934,18 @@ public class Battle : MonoBehaviour
         //Text_Play($"{Target.Name}이/가 쓰러졌다!");
         //배틀종료
     }
+
+    public void CheckAlive()
+    {
+        Pokemon_Alive_Num = 0;
+        for (int i = 0; i < playerData.player_Pokemon.Count; i++)
+        {
+            if (playerData.player_Pokemon[i].isAlive)
+            {
+                Pokemon_Alive_Num++;
+            }
+        }
+    }
     public void SetColor_Slider(Slider Target)
     {
         Image fillImage = Target.transform.Find("Fill Area/Fill").GetComponent<Image>();
@@ -937,8 +966,8 @@ public class Battle : MonoBehaviour
     public void ExitBattle()
     {
         SaveManager.instance.SavePlayerPokemonList(playerData.player_Pokemon);
-        SceneManager.LoadSceneAsync("MainField");
-
+        //SceneManager.LoadSceneAsync("MainField");
+        LoadingScene.LoadScene("MainField");
     }
     public void FindPokemon()
     {

@@ -20,6 +20,7 @@ public class PokemonCenterNPC : MonoBehaviour
                 for (int i = 0; i < playerdata.player_Pokemon.Count; i++)
                 {
                     playerdata.player_Pokemon[i].Hp = playerdata.player_Pokemon[i].MaxHp; //체력회복
+                    playerdata.player_Pokemon[i].isAlive = true;
                     for (int j = 0; j < 4; j++) //pp회복
                     {
                         playerdata.player_Pokemon[i].SkillPP[j] = playerdata.player_Pokemon[i].skills[j].MaxPP;

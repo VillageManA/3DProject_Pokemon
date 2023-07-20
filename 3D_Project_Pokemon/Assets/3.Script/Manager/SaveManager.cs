@@ -78,6 +78,7 @@ public class SaveManager : MonoBehaviour
             pokemonData.Skill2 = pokemon.SkillPP[1];
             pokemonData.Skill3 = pokemon.SkillPP[2];
             pokemonData.Skill4 = pokemon.SkillPP[3];
+            pokemonData.isAlive = pokemon.isAlive;
             // 나머지 속성 복사    
             pokemonDataList.Add(pokemonData);
         }
@@ -130,6 +131,7 @@ public class SaveManager : MonoBehaviour
                 pokemon.SkillPP[1] = pokemonData.Skill2;
                 pokemon.SkillPP[2] = pokemonData.Skill3;
                 pokemon.SkillPP[3] = pokemonData.Skill4;
+                pokemon.isAlive = pokemonData.isAlive;
                 //pokemon.obj = pokemonData.obj;
                 // 나머지 속성 복사
 

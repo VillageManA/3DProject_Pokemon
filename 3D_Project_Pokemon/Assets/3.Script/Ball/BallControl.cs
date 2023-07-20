@@ -39,6 +39,11 @@ public class BallControl : MonoBehaviour
         ballRigidbody.velocity = CalculateThrowVelocity(balls[0].transform.position, player_Zone.transform.position + set_Playerzone, throwSpeed, throwHeight);
         yield return new WaitForSeconds(0.5f);
         battleCam.SwitchCamera(1);
+        while(playerData.player_Pokemon[battle.selected_Pokemon].isAlive==false)
+        {
+            battle.selected_Pokemon++;
+        }
+        battle.CheckAlive();
         GameObject obj = playerData.player_Pokemon[battle.selected_Pokemon].gameObject;
         obj.transform.position = player_Zone.transform.position;
         obj.tag = "PlayerPokemon";

@@ -73,6 +73,7 @@ public class PokemonStats : MonoBehaviour
     {
         while(Exp > required_Exp[Level])
         {
+            AudioManager.Instance.PlaySfx(Define.SFX.LevelUp);
             Exp -= required_Exp[Level];
             Level++;
             hp += 2;

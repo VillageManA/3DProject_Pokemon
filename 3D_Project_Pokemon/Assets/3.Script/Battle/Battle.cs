@@ -20,6 +20,7 @@ public class Battle : MonoBehaviour
     [SerializeField] PlayerData playerData;
     [SerializeField] Animator player_Ani;
     LoadingSceneManager LoadingScene;
+    AudioManager audio;
 
     [Header("UI 오브젝트")]
     [Header("플레이어")]
@@ -152,7 +153,7 @@ public class Battle : MonoBehaviour
     public int info_TopMenu_Num;
     private int max_Info_TopMenu_Num = 2;
     private int info_Selected_Num;
-    private int max_Info_Selected_Num = 2;
+    private int max_Info_Selected_Num;
 
     //캐싱용
     private WaitForSeconds zero_Eight_Seconds = new WaitForSeconds(0.8f);
@@ -160,26 +161,27 @@ public class Battle : MonoBehaviour
     private WaitForSeconds One_Seconds = new WaitForSeconds(1f);
     private void Awake()
     {
+        audio = AudioManager.Instance;
+        audio.PlayBgm("Battle_Opening");
+        Invoke("BattleSound", 16.8f);
+        Invoke("BattleSound2", 85.3f);
         PlayerControl.Instance.gameObject.SetActive(false);
         LoadingScene = FindObjectOfType<LoadingSceneManager>();
         battleManager = FindObjectOfType<BattleManager>();
         playerData = FindObjectOfType<PlayerData>();
         enemyPokemonList = EnemyData.Instance.SelectedEnemyPokemon;
+        max_Info_Selected_Num = playerData.player_Pokemon.Count;
         Enemy_Alive_Num = enemyPokemonList.Length;
-
         SummonEnemy(enemy_Selected_Pokemon);
         SetSkillTypeColor();
     }
     private void Update()
     {
-        Debug.Log(Pokemon_Alive_Num);
-
         if (isRobby)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 RobbyUpKey();
-
             }
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
@@ -350,6 +352,7 @@ public class Battle : MonoBehaviour
         {
             return;
         }
+        audio.PlaySfx(Define.SFX.Move);
         Robby_Cursor.transform.position += Move_Robby_Cursor;
         Robby_Num--;
         UpdateRobbyUI();
@@ -360,12 +363,14 @@ public class Battle : MonoBehaviour
         {
             return;
         }
+        audio.PlaySfx(Define.SFX.Move);
         Robby_Cursor.transform.position -= Move_Robby_Cursor;
         Robby_Num++;
         UpdateRobbyUI();
     }
     public void RobbyEneterKey()
     {
+        audio.PlaySfx(Define.SFX.Click);
         switch (Robby_Num)
         {
             case 0:
@@ -420,6 +425,7 @@ public class Battle : MonoBehaviour
         {
             return;
         }
+        audio.PlaySfx(Define.SFX.Move);
         PlayerSkill_Cursor.transform.position += Move_Fight_Cursor;
         Fight_Num--;
         UpdateSkillUI();
@@ -430,12 +436,14 @@ public class Battle : MonoBehaviour
         {
             return;
         }
+        audio.PlaySfx(Define.SFX.Move);
         PlayerSkill_Cursor.transform.position -= Move_Fight_Cursor;
         Fight_Num++;
         UpdateSkillUI();
     }
     public void FightEnterKey()
     {
+        audio.PlaySfx(Define.SFX.Click);
         Enemy_Num = Random.Range(0, 4);
         //공격칸 구현
         if (PlayerPokemon.skills[Fight_Num].Priority > EnemyPokemon.skills[Enemy_Num].Priority)
@@ -526,6 +534,7 @@ public class Battle : MonoBehaviour
     }
     public void Be_Attacked(PokemonStats Target) //피격모션 이벤트
     {
+        audio.PlaySfx(Define.SFX.Hit);
         Target.GetComponent<Animator>().SetTrigger("Be_Attacked");
     }
     public void initializeAnimation(PokemonStats Attacker, PokemonStats Target) // 애니메이션 이벤트에 등록
@@ -557,6 +566,7 @@ public class Battle : MonoBehaviour
     }
     public void FightExitKey() //ESC키 입력시 로비로 넘어가기
     {
+        audio.PlaySfx(Define.SFX.Click);
         isFight = false;
         isRobby = true;
         PlayerSkill_obj.SetActive(false);
@@ -607,6 +617,7 @@ public class Battle : MonoBehaviour
         {
             return;
         }
+        audio.PlaySfx(Define.SFX.Move);
         PokemonUI_Num--;
         Pokemon_Cursor.transform.position += Move_Pokemon_Cursor;
         UpdatePokemonUI();
@@ -617,18 +628,21 @@ public class Battle : MonoBehaviour
         {
             return;
         }
+        audio.PlaySfx(Define.SFX.Move);
         PokemonUI_Num++;
         Pokemon_Cursor.transform.position -= Move_Pokemon_Cursor;
         UpdatePokemonUI();
     }
     public void PokemonEnterKey()
     {
+        audio.PlaySfx(Define.SFX.Click);
         isPokemon = false;
         isOption = true;
         option_obj.SetActive(true);
     }
     public void PokemonExitKey()
     {
+        audio.PlaySfx(Define.SFX.Click);
         isPokemon = false;
         isRobby = true;
         Pokemon_obj.SetActive(false);
@@ -680,6 +694,7 @@ public class Battle : MonoBehaviour
         {
             return;
         }
+        audio.PlaySfx(Define.SFX.Move);
         option_Num--;
         option_Selected_Zone.transform.position += move_Option_Cursor;
 
@@ -691,12 +706,14 @@ public class Battle : MonoBehaviour
         {
             return;
         }
+        audio.PlaySfx(Define.SFX.Move);
         option_Num++;
         option_Selected_Zone.transform.position -= move_Option_Cursor;
         UpdateOptionUI();
     }
     public void OptionEnterKey()
     {
+        audio.PlaySfx(Define.SFX.Click);
         switch (option_Num)
         {
             case 0:
@@ -729,6 +746,7 @@ public class Battle : MonoBehaviour
     }
     public void OptionExitKey()
     {
+        audio.PlaySfx(Define.SFX.Click);
         option_Selected_Zone.transform.localPosition = defalut_Selected_Zone;
         option_Num = 0;
         UpdateOptionUI();
@@ -757,6 +775,7 @@ public class Battle : MonoBehaviour
         {
             return;
         }
+        audio.PlaySfx(Define.SFX.Move);
         info_Selected_Num--;
         UpdateInfoUI();
     }
@@ -766,6 +785,7 @@ public class Battle : MonoBehaviour
         {
             return;
         }
+        audio.PlaySfx(Define.SFX.Move);
         info_Selected_Num++;
         UpdateInfoUI();
     }
@@ -775,6 +795,7 @@ public class Battle : MonoBehaviour
         {
             return;
         }
+        audio.PlaySfx(Define.SFX.Move);
         info_TopMenu_Num--;
         UpdateInfoUI();
     }
@@ -784,6 +805,7 @@ public class Battle : MonoBehaviour
         {
             return;
         }
+        audio.PlaySfx(Define.SFX.Move);
         info_TopMenu_Num++;
         UpdateInfoUI();
     }
@@ -793,6 +815,7 @@ public class Battle : MonoBehaviour
     }
     public void InfoExitKey()
     {
+        audio.PlaySfx(Define.SFX.Click);
         isInfo = false;
         isPokemon = true;
         Info_obj.SetActive(false);
@@ -865,7 +888,17 @@ public class Battle : MonoBehaviour
         Effect_obj.SetActive(false);
     }
     #endregion
+    #region 사운드 관련
+    public void BattleSound()
+    {
+        audio.PlayBgm("Battle_ing");
+    }
+    public void BattleSound2()
+    {
+        audio.PlayBgm("Battle_ing2");
+    }
 
+    #endregion
 
     public void SummonEnemy(int num)
     {
@@ -890,6 +923,7 @@ public class Battle : MonoBehaviour
         {
             PlayerPokemon.isAlive = false;
             playerData.player_Pokemon[selected_Pokemon].isAlive = false;
+            //audio.PlaySfx(Define.SFX.Dead);
             CheckAlive();
         }
         if (EnemyPokemon.Hp == 0)
@@ -897,6 +931,8 @@ public class Battle : MonoBehaviour
             EnemyPokemon.isAlive = false;
             enemyPokemonList[enemy_Selected_Pokemon].isAlive = false;
             Enemy_Alive_Num--;
+            //audio.PlaySfx(Define.SFX.Dead);
+
         }
         if (!PlayerPokemon.isAlive)
         {

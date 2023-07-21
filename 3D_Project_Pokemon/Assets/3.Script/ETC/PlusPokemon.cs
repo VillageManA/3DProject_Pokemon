@@ -64,6 +64,8 @@ public class PlusPokemon : MonoBehaviour
                 {
                     Pokenum = SettingPokemon.Length - 1;
                 }
+                AudioManager.Instance.PlaySfx(Define.SFX.Move);
+
                 UpdatePlusUI();
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -74,16 +76,20 @@ public class PlusPokemon : MonoBehaviour
                 {
                     Pokenum = 0;
                 }
+                AudioManager.Instance.PlaySfx(Define.SFX.Move);
+
                 UpdatePlusUI();
             }
             else if (Input.GetKeyDown(KeyCode.Return))
             {
                 // 엔터 키를 누르면 선택한 포켓몬을 추가합니다.
+                AudioManager.Instance.PlaySfx(Define.SFX.Click);
                 PlustPokemon_(Pokenum);
                 break; // 입력 처리 후 반복문을 빠져나옵니다.
             }
             else if (Input.GetKeyDown(KeyCode.Escape))
             {
+                AudioManager.Instance.PlaySfx(Define.SFX.Click);
                 // ESC 키를 누르면 선택을 취소합니다.
                 break; // 입력 처리 후 반복문을 빠져나옵니다.
             }

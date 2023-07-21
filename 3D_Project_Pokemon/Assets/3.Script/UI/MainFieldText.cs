@@ -72,6 +72,7 @@ public class MainFieldText : MonoBehaviour
     {
         if (isWaitingForInput && Input.GetKeyDown(KeyCode.Return))
         {
+            AudioManager.Instance.PlaySfx(Define.SFX.Click);
             isWaitingForInput = false;
         }
     }

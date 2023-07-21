@@ -11,6 +11,7 @@ public class PokemonCenter : MonoBehaviour
     {
         playerdata = FindObjectOfType<PlayerData>();
         PlayerControl.Instance.gameObject.SetActive(true);
+        AudioManager.Instance.PlayBgm("PokemonCenter");
     }
     private void OnTriggerEnter(Collider other)
     {

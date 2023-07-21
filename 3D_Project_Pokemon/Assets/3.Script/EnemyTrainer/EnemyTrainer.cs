@@ -34,7 +34,8 @@ public class EnemyTrainer : MonoBehaviour
 
     private IEnumerator Confirm_Player_co(Collider other)
     {
-        if(other.gameObject.TryGetComponent(out Animator ani))
+        AudioManager.Instance.PlayBgm("MeetTrainer");
+        if (other.gameObject.TryGetComponent(out Animator ani))
         {
             ani.SetBool("Run", false);
             ani.SetBool("Move", false);

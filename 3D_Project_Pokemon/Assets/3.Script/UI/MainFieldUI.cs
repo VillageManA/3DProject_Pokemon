@@ -14,7 +14,7 @@ public class MainFieldUI : MonoBehaviour
     public bool isInfo;
 
     [SerializeField] PlayerData playerData;
-
+    AudioManager audioManager;
     [Header("로비 관련")]
     [SerializeField] GameObject Robby_obj;
     [SerializeField] GameObject Robby_Cursor;
@@ -115,6 +115,7 @@ public class MainFieldUI : MonoBehaviour
     private void Awake()
     {
         playerData = FindObjectOfType<PlayerData>();
+        audioManager = AudioManager.Instance;
     }
     private void Update()
     {
@@ -122,6 +123,7 @@ public class MainFieldUI : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+                audioManager.PlaySfx(Define.SFX.Click);
                 isRobby = true;
                 isOpen = true;
                 isMainField = false;
@@ -261,6 +263,7 @@ public class MainFieldUI : MonoBehaviour
         {
             return;
         }
+        audioManager.PlaySfx(Define.SFX.Move);
         Robby_Cursor.transform.position -= move_Down_Robby_Cursor;
         Robby_Num -= 4;
         UpdateRobbyUI();
@@ -272,6 +275,7 @@ public class MainFieldUI : MonoBehaviour
         {
             return;
         }
+        audioManager.PlaySfx(Define.SFX.Move);
         Robby_Cursor.transform.position += move_Down_Robby_Cursor;
         Robby_Num += 4;
         UpdateRobbyUI();
@@ -290,6 +294,7 @@ public class MainFieldUI : MonoBehaviour
         {
             Robby_Cursor.transform.position -= move_Right_Robby_Cursor;
         }
+        audioManager.PlaySfx(Define.SFX.Move);
         Robby_Num--;
         UpdateRobbyUI();
     }
@@ -307,6 +312,7 @@ public class MainFieldUI : MonoBehaviour
         {
             Robby_Cursor.transform.position += move_Right_Robby_Cursor;
         }
+        audioManager.PlaySfx(Define.SFX.Move);
         Robby_Num++;
         UpdateRobbyUI();
     }
@@ -316,6 +322,7 @@ public class MainFieldUI : MonoBehaviour
         {
             case 0:
                 {
+                    audioManager.PlaySfx(Define.SFX.Click);
                     isRobby = false;
                     isPokemon = true;
                     Robby_obj.SetActive(false);
@@ -353,6 +360,7 @@ public class MainFieldUI : MonoBehaviour
     }
     public void RobbyExitKey()
     {
+        audioManager.PlaySfx(Define.SFX.Click);
         isRobby = false;
         isMainField = true;
         Robby_obj.SetActive(false);
@@ -377,6 +385,7 @@ public class MainFieldUI : MonoBehaviour
         {
             return;
         }
+        audioManager.PlaySfx(Define.SFX.Move);
         PokemonUI_Num--;
         Pokemon_Cursor.transform.position += Move_Pokemon_Cursor;
         UpdatePokemonUI();
@@ -387,18 +396,21 @@ public class MainFieldUI : MonoBehaviour
         {
             return;
         }
+        audioManager.PlaySfx(Define.SFX.Move);
         PokemonUI_Num++;
         Pokemon_Cursor.transform.position -= Move_Pokemon_Cursor;
         UpdatePokemonUI();
     }
     public void PokemonEnterKey()
     {
+        audioManager.PlaySfx(Define.SFX.Click);
         isPokemon = false;
         isOption = true;
         option_obj.SetActive(true);
     }
     public void PokemonExitKey()
     {
+        audioManager.PlaySfx(Define.SFX.Click);
         isPokemon = false;
         isRobby = true;
         Pokemon_obj.SetActive(false);
@@ -468,6 +480,7 @@ public class MainFieldUI : MonoBehaviour
         {
             return;
         }
+        audioManager.PlaySfx(Define.SFX.Move);
         option_Num--;
         option_Selected_Zone.transform.position += move_Option_Cursor;
 
@@ -479,6 +492,7 @@ public class MainFieldUI : MonoBehaviour
         {
             return;
         }
+        audioManager.PlaySfx(Define.SFX.Move);
         option_Num++;
         option_Selected_Zone.transform.position -= move_Option_Cursor;
         UpdateOptionUI();
@@ -489,6 +503,7 @@ public class MainFieldUI : MonoBehaviour
         {
             case 0:
                 {
+                    audioManager.PlaySfx(Define.SFX.Click);
                     isOption = false;
                     isChange = true;
                     Change_Num = PokemonUI_Num;
@@ -504,6 +519,7 @@ public class MainFieldUI : MonoBehaviour
                 break;
             case 1:
                 {
+                    audioManager.PlaySfx(Define.SFX.Click);
                     max_Info_Selected_Num = playerData.player_Pokemon.Count;
                     info_Selected_Num = PokemonUI_Num;
                     UpdateInfoUI();
@@ -523,6 +539,7 @@ public class MainFieldUI : MonoBehaviour
     }
     public void OptionExitKey()
     {
+        audioManager.PlaySfx(Define.SFX.Click);
         option_Selected_Zone.transform.localPosition = defalut_Selected_Zone;
         option_Num = 0;
         UpdateOptionUI();
@@ -552,6 +569,7 @@ public class MainFieldUI : MonoBehaviour
         {
             return;
         }
+        audioManager.PlaySfx(Define.SFX.Move);
         info_Selected_Num--;
         UpdateInfoUI();
     }
@@ -561,6 +579,7 @@ public class MainFieldUI : MonoBehaviour
         {
             return;
         }
+        audioManager.PlaySfx(Define.SFX.Move);
         info_Selected_Num++;
         UpdateInfoUI();
     }
@@ -570,6 +589,7 @@ public class MainFieldUI : MonoBehaviour
         {
             return;
         }
+        audioManager.PlaySfx(Define.SFX.Move);
         info_TopMenu_Num--;
         UpdateInfoUI();
     }
@@ -579,6 +599,7 @@ public class MainFieldUI : MonoBehaviour
         {
             return;
         }
+        audioManager.PlaySfx(Define.SFX.Move);
         info_TopMenu_Num++;
         UpdateInfoUI();
     }
@@ -588,6 +609,7 @@ public class MainFieldUI : MonoBehaviour
     }
     public void InfoExitKey()
     {
+        audioManager.PlaySfx(Define.SFX.Click);
         isInfo = false;
         isPokemon = true;
         Info_obj.SetActive(false);

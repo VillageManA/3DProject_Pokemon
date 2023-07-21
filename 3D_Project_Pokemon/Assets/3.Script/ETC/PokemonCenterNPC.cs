@@ -27,6 +27,7 @@ public class PokemonCenterNPC : MonoBehaviour
 
                     }
                 }
+                AudioManager.Instance.PlaySfx(Define.SFX.Heal);
                 mainFieldText.TextPlay("회복되었단다.");
                 return;
             }

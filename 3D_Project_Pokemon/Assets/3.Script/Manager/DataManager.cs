@@ -30,7 +30,6 @@ public class DataManager : MonoBehaviour
             if (pokemon[i].TryGetComponent(out PokemonStats stat))
             {
                 stat.Name = pokemonData[i].Name;
-                stat.Name = pokemonData[i].Name;
                 stat.defalut_MaxHp = pokemonData[i].MaxHp;
                 stat.defalut_Attack = pokemonData[i].Attack;
                 stat.defalut_Defence = pokemonData[i].Defence;

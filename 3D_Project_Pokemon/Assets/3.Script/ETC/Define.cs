@@ -11,7 +11,7 @@ public class Define : MonoBehaviour
 
     public enum SFX
     {
-        Move, Click, Heal, Hit, LevelUp , Dead
+        Move, Click, Heal, HitBig, LevelUp , HitWeak , HitNormal , BallOut
 
     }
 }

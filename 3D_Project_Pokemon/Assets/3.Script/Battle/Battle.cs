@@ -175,6 +175,7 @@ public class Battle : MonoBehaviour
         SummonEnemy(enemy_Selected_Pokemon);
         SetSkillTypeColor();
     }
+
     private void Update()
     {
         if (isRobby)
@@ -534,7 +535,7 @@ public class Battle : MonoBehaviour
     }
     public void Be_Attacked(PokemonStats Target) //피격모션 이벤트
     {
-        audio.PlaySfx(Define.SFX.Hit);
+        audio.PlaySfx(Define.SFX.HitNormal);
         Target.GetComponent<Animator>().SetTrigger("Be_Attacked");
     }
     public void initializeAnimation(PokemonStats Attacker, PokemonStats Target) // 애니메이션 이벤트에 등록
@@ -588,11 +589,11 @@ public class Battle : MonoBehaviour
         Robby_Cursor.transform.localPosition = Default_Robby_Cursor;
         Fight_Num = 0;
         Robby_Num = 0;
-        if(PlayerPokemon.isAlive)
+        if (PlayerPokemon.isAlive)
         {
-        isRobby = true;
-        Robby_obj.SetActive(true);
-        }    
+            isRobby = true;
+            Robby_obj.SetActive(true);
+        }
         Update_PokemonData();
     }
     public void Update_PokemonData()
@@ -936,7 +937,7 @@ public class Battle : MonoBehaviour
         }
         if (!PlayerPokemon.isAlive)
         {
-            if (Pokemon_Alive_Num >0)
+            if (Pokemon_Alive_Num > 0)
             {
                 isRobby = false;
                 isPokemon = true;
@@ -955,9 +956,17 @@ public class Battle : MonoBehaviour
         }
         if (!EnemyPokemon.isAlive)
         {
-            Text_Play("경험치를 획득했다!", 0.8f);
             PlayerPokemon.Exp += 50 * EnemyPokemon.Level;
-            PlayerPokemon.CheckLevelUp();
+            if (PlayerPokemon.Exp > PlayerPokemon.required_Exp[PlayerPokemon.Level])
+            {
+                PlayerPokemon.CheckLevelUp();
+                Text_Play($"{PlayerPokemon.Name}은 {PlayerPokemon.Level}로 레벨업했다!", 0.8f);
+            }
+            else
+            {
+                Text_Play("경험치를 획득했다!", 0.8f);
+
+            }
             if (Enemy_Alive_Num > 0)
             {
                 Invoke("ChangeEnemyPokemon", 0.81f);

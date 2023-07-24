@@ -96,12 +96,13 @@ public class MainFieldUI : MonoBehaviour
     private int max_Change_Num;
     private Vector3 move_Change_Slot = new Vector3(0, 140, 0);
     private Vector3 defalut_Change_Slot = new Vector3(440,880,0);
+
     //옵션 관련 변수
     public int option_Num;
-    private int maxOption_Num = 3;
+    private int maxOption_Num = 4;
     private Vector3 defalut_option_obj = new Vector3(900, 840, 0);
     private Vector3 move_option_obj = new Vector3(0, 140, 0);
-    private Vector3 defalut_Selected_Zone = new Vector3(-50, 55, 0);
+    private Vector3 defalut_Selected_Zone = new Vector3(-50, 80, 0);
     private Vector3 defalut_Option_Cursor = new Vector3(-60, 0, 0);
     private Vector3 move_Option_Cursor = new Vector3(0, 50, 0);
 
@@ -115,7 +116,7 @@ public class MainFieldUI : MonoBehaviour
     private void Awake()
     {
         playerData = FindObjectOfType<PlayerData>();
-        audioManager = AudioManager.Instance;
+        audioManager = FindObjectOfType<AudioManager>();
     }
     private void Update()
     {
@@ -392,7 +393,7 @@ public class MainFieldUI : MonoBehaviour
     }
     public void PokemonDownKey()
     {
-        if (PokemonUI_Num >= playerData.player_Pokemon_List.Length - 1)
+        if (PokemonUI_Num >= playerData.player_Pokemon.Count - 1)
         {
             return;
         }
@@ -408,6 +409,7 @@ public class MainFieldUI : MonoBehaviour
         isOption = true;
         option_obj.SetActive(true);
     }
+    
     public void PokemonExitKey()
     {
         audioManager.PlaySfx(Define.SFX.Click);
@@ -448,7 +450,7 @@ public class MainFieldUI : MonoBehaviour
             Pokemon_Slot[i].SetActive(false);
 
         }
-        for (int i = 0; i < playerData.player_Pokemon_List.Length; i++) // 6을 플레이어 List의 Count까지로 바꿔줄것
+        for (int i = 0; i < playerData.player_Pokemon.Count; i++) // 6을 플레이어 List의 Count까지로 바꿔줄것
         {
             Pokemon_Slot[i].SetActive(true);
         }
@@ -532,6 +534,11 @@ public class MainFieldUI : MonoBehaviour
                 break;
             case 2:
                 {
+                    OptionEmit();
+                }
+                break;
+            case 3:
+                {
                     OptionExitKey();
                 }
                 break;
@@ -548,6 +555,24 @@ public class MainFieldUI : MonoBehaviour
         option_obj.SetActive(false);
     }
                     
+    public void OptionEmit()
+    {
+        if(playerData.player_Pokemon.Count==1)
+        {
+            return;
+        }
+        playerData.player_Pokemon.RemoveAt(PokemonUI_Num);
+        isOption = false;
+        isPokemon = true;
+        option_obj.SetActive(false);
+        if(PokemonUI_Num>=playerData.player_Pokemon.Count)
+        {
+            PokemonUI_Num--;
+            Pokemon_Cursor.transform.position += Move_Pokemon_Cursor;
+        }
+        UpdateOptionUI();
+        UpdatePokemonUI();
+    }
     public void UpdateOptionUI()
     {
         option_obj.transform.position = defalut_option_obj;

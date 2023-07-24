@@ -40,7 +40,7 @@ public class PokemonStats : MonoBehaviour
     [SerializeReference] public int defalut_SpAttack;
     [SerializeReference] public int defalut_SpDefence;
     [SerializeReference] public int defalut_Speed;
-    private int[] required_Exp;
+    public int[] required_Exp;
     public enum Type
     {
         Normal, Fight, Poison, Earth, Flight, Bug, Rock, Ghost, Steel, Fire, Water, Electricty, Grass, Ice, Esper, Dragon, Evil, Fairy, None

@@ -240,72 +240,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!1 &107318253
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 107318254}
-  - component: {fileID: 107318255}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &107318254
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 107318253}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 909265794}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &107318255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 107318253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b1aa07202a3e2e40a919bf193927ecf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bgmClips:
-  - name: MainField
-    clip: {fileID: 8300000, guid: 33a507d3f864cc6478c56bc23d880457, type: 3}
-  - name: Battle_Opening
-    clip: {fileID: 8300000, guid: 094f948247fab1745ae3e84d67876193, type: 3}
-  - name: Battle_ing
-    clip: {fileID: 8300000, guid: e5ae64259dfdb1946bbe628766bc21b3, type: 3}
-  - name: Battle_ing2
-    clip: {fileID: 8300000, guid: dc74078c7b2b3d542a5439d9bd599ee9, type: 3}
-  - name: Battle_Champion
-    clip: {fileID: 8300000, guid: 6e9691eb10bf5374f945b84800e91f8b, type: 3}
-  - name: PokemonCenter
-    clip: {fileID: 8300000, guid: 871d87b4c15640940b5f6fae6a22e8a7, type: 3}
-  - name: MeetTrainer
-    clip: {fileID: 8300000, guid: da0e34788d80b4d43834230b636c59f6, type: 3}
-  bgmVolume: 0
-  sfxVolume: 0
-  sfxClips:
-  - {fileID: 8300000, guid: d8bfc6f98777d20488bd137faef004ea, type: 3}
-  - {fileID: 8300000, guid: d142ce9cd8381314284e28a91d47056d, type: 3}
-  - {fileID: 8300000, guid: e5c63c5b0db631847b5900deef76c8d5, type: 3}
-  - {fileID: 8300000, guid: dde70916b34a146458aa7642c8a39cdb, type: 3}
-  - {fileID: 8300000, guid: 13c82a504047ce34eb10409e318d4167, type: 3}
 --- !u!1 &173651816
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,40 +376,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245684002}
   m_CullTransparentMesh: 1
---- !u!1 &909265793
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 909265794}
-  m_Layer: 0
-  m_Name: Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &909265794
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909265793}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1727354947}
-  - {fileID: 1436085268}
-  - {fileID: 1020481570}
-  - {fileID: 107318254}
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1020481568
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,8 +421,8 @@ Transform:
   m_LocalPosition: {x: -279.9552, y: 25.36053, z: 167.99994}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 909265794}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1275502814
 GameObject:
@@ -731,8 +631,8 @@ Transform:
   m_LocalPosition: {x: 1.376041, y: 0.73495936, z: -5.4770455}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 909265794}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1455978821
 GameObject:
@@ -809,6 +709,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1455978821}
   m_CullTransparentMesh: 1
+--- !u!1 &1663221850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1663221851}
+  - component: {fileID: 1663221852}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1663221851
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663221850}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1663221852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663221850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b1aa07202a3e2e40a919bf193927ecf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmClips:
+  - name: MainField
+    clip: {fileID: 8300000, guid: 33a507d3f864cc6478c56bc23d880457, type: 3}
+  - name: Battle_Opening
+    clip: {fileID: 8300000, guid: 094f948247fab1745ae3e84d67876193, type: 3}
+  - name: Battle_ing
+    clip: {fileID: 8300000, guid: e5ae64259dfdb1946bbe628766bc21b3, type: 3}
+  - name: Battle_ing2
+    clip: {fileID: 8300000, guid: dc74078c7b2b3d542a5439d9bd599ee9, type: 3}
+  - name: Battle_Champion
+    clip: {fileID: 8300000, guid: 6e9691eb10bf5374f945b84800e91f8b, type: 3}
+  - name: PokemonCenter
+    clip: {fileID: 8300000, guid: 871d87b4c15640940b5f6fae6a22e8a7, type: 3}
+  - name: MeetTrainer
+    clip: {fileID: 8300000, guid: da0e34788d80b4d43834230b636c59f6, type: 3}
+  bgmVolume: 0
+  sfxVolume: 0
+  sfxClips:
+  - {fileID: 8300000, guid: 87f931f5c48882e4c82b8e14a5d9304f, type: 3}
+  - {fileID: 8300000, guid: d142ce9cd8381314284e28a91d47056d, type: 3}
+  - {fileID: 8300000, guid: e5c63c5b0db631847b5900deef76c8d5, type: 3}
+  - {fileID: 8300000, guid: dde70916b34a146458aa7642c8a39cdb, type: 3}
+  - {fileID: 8300000, guid: 13c82a504047ce34eb10409e318d4167, type: 3}
+  - {fileID: 8300000, guid: f59725cdd998c5a4c8042f20d4b19197, type: 3}
+  - {fileID: 8300000, guid: b269ea2cc33a6e647b0ee41453acbbd5, type: 3}
+  - {fileID: 8300000, guid: a1e8e1b7b3cd6be4d8136625974c87ae, type: 3}
 --- !u!1 &1727354944
 GameObject:
   m_ObjectHideFlags: 0
@@ -1069,8 +1038,8 @@ Transform:
   m_LocalPosition: {x: -0.6079366, y: 0.8186054, z: 0.0877893}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 909265794}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1910645961
 GameObject:

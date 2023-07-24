@@ -44,6 +44,7 @@ public class BallControl : MonoBehaviour
             battle.selected_Pokemon++;
         }
         battle.CheckAlive();
+        AudioManager.Instance.PlaySfx(Define.SFX.BallOut);
         GameObject obj = playerData.player_Pokemon[battle.selected_Pokemon].gameObject;
         obj.transform.position = player_Zone.transform.position;
         obj.tag = "PlayerPokemon";

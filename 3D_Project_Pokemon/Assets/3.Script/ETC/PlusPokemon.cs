@@ -17,8 +17,8 @@ public class PlusPokemon : MonoBehaviour
     private int Pokenum = 0;
     private bool isOpen = false;
 
-    private Vector3 defalut_Selected_Zone = new Vector3(0, 0, 0);
-    private Vector3 move_Selected_Zone = new Vector3(0, 0, 0);
+    private Vector3 defalut_Selected_Zone = new Vector3(0, 160, 0);
+    private Vector3 move_Selected_Zone = new Vector3(0, -65, 0);
 
     private void Awake()
     {
@@ -27,6 +27,8 @@ public class PlusPokemon : MonoBehaviour
         for (int i = 0; i < SettingPokemon.Length; i++)
         {
             SettingPokemon[i].Level = 5;
+            SettingPokemon[i].Setting_LevelStats();
+            SettingPokemon[i].Hp = SettingPokemon[i].MaxHp;
         }
     }
     private void OnTriggerStay(Collider other)
@@ -109,9 +111,10 @@ public class PlusPokemon : MonoBehaviour
         for (int i = 0; i < SettingPokemon.Length; i++)
         {
             PokemonName[i].text = SettingPokemon[i].Name;
+            PokemonName[i].color = Color.black;
         }
-
-        Selected_Zone.transform.position = defalut_Selected_Zone;
+        PokemonName[Pokenum].color = Color.white;
+        Selected_Zone.transform.localPosition = defalut_Selected_Zone;
 
         for (int i = 0; i < Pokenum; i++)
         {
